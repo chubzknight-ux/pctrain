@@ -1,0 +1,19 @@
+{
+  "name": "Latihan Inti Pria",
+  "short_name": "Latihan Inti",
+  "description": "Latihan harian dasar panggul, adduktor dan hip flexor dengan panduan interaktif.",
+  "lang": "id",
+  "start_url": "/?app=1",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c2a2e",
+  "theme_color": "#0c2a2e",
+  "categories": ["health", "fitness"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

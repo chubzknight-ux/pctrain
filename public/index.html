@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Latihan Inti Pria</title>
+<meta name="theme-color" content="#0c2a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Latihan Inti">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday coaching, confident and calm
+   IDEA an animated anatomy coach card, like the reel: a ring with the pelvic floor lifting inside
+   PICTURE the live ring: muscle sling rises and drops with each phase, or a body figure for leg moves
+   COLOUR deep teal ground, cream ink, mint for pelvic, yellow for adductor, coral for hip flexor
+   TYPE Bowlby One for the big words + Inter
+   LAYOUT tabs on top, today's plan with hero art; full-screen player with ring centred, controls under */
+:root{color-scheme:dark;--bg:#0c2a2e;--bg2:#0a2225;--panel:#12383d;--line:#22525a;--ink:#f4ecd9;--mute:#a7c2bd;--mint:#5fd3b6;--yel:#f2c84b;--coral:#ff8a72;--cd:#c9d6ff}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:980px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 0 8px}
+h1{font:400 clamp(24px,5vw,34px)/1.05 'Bowlby One',sans-serif;margin:0;letter-spacing:-.01em}
+h1 span{color:var(--mint)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:6px 0 14px;position:sticky;top:0;background:var(--bg);z-index:5}
+nav button{flex:none}
+button{font:inherit;color:inherit;cursor:pointer}
+.tab{background:transparent;border:1px solid var(--line);border-radius:999px;padding:9px 16px;min-height:44px;font-weight:600;color:var(--mute)}
+.tab[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab:focus-visible,.btn:focus-visible,.seg button:focus-visible,.ic:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:20px;align-items:center;background:var(--panel);border-radius:22px;padding:clamp(18px,3vw,30px)}
+.hero h2{font:400 clamp(32px,6vw,48px)/1.05 'Bowlby One',sans-serif;margin:4px 0 8px}
+.date{color:var(--mute);font-weight:600}
+.hero p{margin:0 0 14px;color:var(--mute);max-width:46ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{background:var(--bg);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600;white-space:nowrap}
+.btn{border:0;border-radius:14px;padding:14px 22px;min-height:52px;font-weight:700;font-size:17px;background:var(--mint);color:#06211f}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);font-size:15px;min-height:44px;padding:10px 16px}
+.btn.small{font-size:14px;min-height:40px;padding:8px 14px;border-radius:10px}
+.heroart{max-width:260px;justify-self:center;width:100%}
+.heroart svg{width:100%;height:auto;display:block}
+.notice{background:var(--yel);color:#2a2104;border-radius:14px;padding:12px 16px;margin:0 0 14px;font-weight:600;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.notice .btn{background:#2a2104;color:var(--yel)}
+.settings{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:16px 0 6px}
+.settings label{font-size:14px;color:var(--mute);font-weight:600}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.seg button{background:transparent;border:0;padding:8px 14px;min-height:44px;font-weight:600;color:var(--mute)}
+.seg button[aria-pressed=true]{background:var(--mint);color:#06211f}
+.tog{display:inline-flex;align-items:center;gap:8px;min-height:44px}
+.tog input{width:20px;height:20px;accent-color:var(--mint)}
+.block{margin-top:26px}
+.bh{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.bh h3{font:400 22px/1.1 'Bowlby One',sans-serif;margin:0}
+.bh span{color:var(--mute);font-size:14px}
+.dot{width:12px;height:12px;border-radius:50%;flex:none;align-self:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px}
+.card{background:var(--panel);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:6px;border-left:4px solid var(--c)}
+.card h4{margin:0;font-size:17px}
+.rx{font-weight:700;color:var(--c);font-size:15px}
+.card p{margin:0;color:var(--mute);font-size:15px}
+details summary{cursor:pointer;color:var(--ink);font-weight:600;font-size:14px;padding:4px 0}
+details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
+.card .btn{align-self:flex-start;margin-top:auto}
+.week{display:grid;gap:8px}
+.wrow{display:grid;grid-template-columns:5.5em minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--panel);border-radius:14px;padding:12px 14px;border:0;text-align:left;width:100%}
+.wrow.today{outline:2px solid var(--mint)}
+.wrow b{display:block}
+.wrow small{color:var(--mute);font-size:14px}
+.ok{color:var(--mint);font-weight:700;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:12px;margin-bottom:18px}
+.stat{background:var(--panel);border-radius:16px;padding:16px}
+.stat b{font:400 clamp(30px,6vw,44px)/1 'Bowlby One',sans-serif;display:block;color:var(--yel)}
+.stat span{color:var(--mute);font-size:14px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;max-width:460px}
+.cal div{aspect-ratio:1;border-radius:10px;background:var(--panel);display:grid;place-items:center;font-size:13px;color:var(--mute)}
+.cal .h{background:none;aspect-ratio:auto;font-weight:600}
+.cal .on{background:var(--mint);color:#06211f;font-weight:700}
+.cal .now{outline:2px solid var(--yel)}
+.guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.guide section{background:var(--panel);border-radius:16px;padding:18px}
+.guide h3{font:400 20px/1.15 'Bowlby One',sans-serif;margin:0 0 8px}
+.guide ul{margin:0;padding-left:18px;color:var(--mute)}
+.guide li{margin-bottom:6px}
+.guide li b{color:var(--ink)}
+.fine{color:var(--mute);font-size:13px;margin-top:18px}
+.empty{color:var(--mute);background:var(--panel);border-radius:14px;padding:16px;margin-top:14px}
+/* player */
+#player{position:fixed;inset:0;background:var(--bg2);z-index:20;display:none;flex-direction:column;padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) calc(14px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));overflow-y:auto}
+#player.open{display:flex}
+.pbar{height:6px;background:var(--panel);border-radius:9px;overflow:hidden;margin:8px 0 10px}
+.pbar i{display:block;height:100%;width:0;background:var(--mint)}
+.ptop{display:flex;align-items:center;gap:10px}
+.ptop .grow{flex:1}
+.blk{font-size:13px;font-weight:700;color:var(--c);white-space:nowrap}
+.ic{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;flex:none}
+.ic svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ic.off{opacity:.45}
+#exName{font:400 clamp(22px,5vw,30px)/1.1 'Bowlby One',sans-serif;margin:6px 0 2px;text-align:center;text-wrap:balance}
+#repInfo{text-align:center;color:var(--mute);font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0}
+#art{width:min(74vw,44vh,400px);height:auto;flex:none}
+.meter{height:min(52vw,32vh,280px);width:44px;position:relative;flex:none}
+.meter .tr{position:absolute;left:14px;top:0;bottom:0;width:16px;border-radius:9px;background:var(--panel)}
+.meter .kn{position:absolute;left:8px;width:28px;height:28px;border-radius:8px;background:var(--ink);transform:translateY(50%)}
+.meter span{position:absolute;right:46px;transform:translateY(50%);font:400 15px 'Bowlby One',sans-serif;color:var(--mute)}
+.meter .up{top:-26px;bottom:auto;right:auto;left:4px;transform:none;color:var(--mint)}
+#phase{font:400 clamp(30px,8vw,46px)/1 'Bowlby One',sans-serif;text-align:center;margin-top:4px}
+#count{font:400 clamp(44px,12vw,72px)/1 'Bowlby One',sans-serif;text-align:center;color:var(--ink);font-variant-numeric:tabular-nums}
+#cue{text-align:center;color:var(--mute);max-width:520px;margin:6px auto 0;min-height:3em;font-size:16px}
+#cue ol{text-align:left;margin:4px 0 0;padding-left:20px}
+#next{text-align:center;font-size:14px;color:var(--mute);margin-top:4px}
+.ctr{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:auto;padding-top:14px}
+.ctr .ic{width:56px;height:56px}
+.ctr .play{width:76px;height:76px;background:var(--mint);border:0}
+.ctr .play svg{stroke:#06211f;fill:#06211f;width:28px;height:28px}
+#done{display:none;text-align:center;margin:auto;max-width:420px}
+#done h2{font:400 44px/1.05 'Bowlby One',sans-serif;margin:0 0 10px;color:var(--mint)}
+#done p{color:var(--mute)}
+@media(max-width:640px){.hero{grid-template-columns:minmax(0,1fr)}.heroart{max-width:190px;grid-row:2}.hero .btn.go{width:100%}}
+@media(max-height:680px){#cue{min-height:0;font-size:15px}.ctr{padding-top:8px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Latihan Inti <span>Pria</span></h1>
+  </header>
+  <nav role="tablist">
+    <button class="tab" role="tab" data-v="today" aria-selected="true">Hari ini</button>
+    <button class="tab" role="tab" data-v="week" aria-selected="false">Minggu ini</button>
+    <button class="tab" role="tab" data-v="hist" aria-selected="false">Riwayat</button>
+    <button class="tab" role="tab" data-v="guide" aria-selected="false">Panduan</button>
+  </nav>
+
+  <main>
+    <div id="v-today"></div>
+    <div id="v-week" hidden></div>
+    <div id="v-hist" hidden></div>
+    <div id="v-guide" hidden>
+      <div class="guide">
+        <section><h3>Temukan ototnya</h3><ul>
+          <li>Bayangkan menahan kencing <b>dan</b> menahan buang angin sekaligus. Otot yang terangkat ke dalam itulah dasar panggul (pelvic floor).</li>
+          <li>Cek di depan cermin: saat dikencangkan, pangkal penis sedikit terangkat dan buah zakar naik.</li>
+          <li>Boleh sekali mencoba menahan aliran kencing untuk mengenali rasanya, tapi <b>jangan dijadikan latihan rutin</b> karena bisa mengganggu pengosongan kandung kemih.</li>
+        </ul></section>
+        <section><h3>Teknik yang benar</h3><ul>
+          <li><b>Napas tetap jalan.</b> Jangan menahan napas atau mengejan.</li>
+          <li>Saat latihan pelvic, pantat, paha dalam dan perut tetap rileks.</li>
+          <li><b>Lepas penuh</b> tiap rep. Kemampuan rileks sama pentingnya dengan kekuatan, terutama untuk kontrol.</li>
+          <li>Kualitas lebih penting dari jumlah. Kalau otot mulai goyah, berhenti di rep itu.</li>
+          <li>Posisi awal paling mudah: berbaring, lutut ditekuk. Setelah lancar, coba duduk lalu berdiri.</li>
+        </ul></section>
+        <section><h3>Kenapa adduktor &amp; hip flexor</h3><ul>
+          <li><b>Adduktor</b> (paha dalam) menempel di tulang kemaluan dan bekerja bersama dasar panggul menstabilkan panggul. Kuat dan lentur berarti gerakan pinggul lebih bertenaga dan tahan lama.</li>
+          <li><b>Hip flexor</b> (iliopsoas) mengangkat paha. Sering kaku karena banyak duduk, sehingga membatasi gerak pinggul ke depan. Karena itu tiap sesi ada penguatan dan peregangan.</li>
+        </ul></section>
+        <section><h3>Program mingguan</h3><ul>
+          <li><b>Senin</b> Kekuatan · <b>Selasa</b> Kecepatan · <b>Rabu</b> Daya tahan · <b>Kamis</b> Kontrol · <b>Jumat</b> Power · <b>Sabtu</b> Kombinasi · <b>Minggu</b> Pemulihan.</li>
+          <li>Gerakan adduktor, hip flexor dan peregangan bergiliran tiap hari, jadi susunan sesi tidak pernah sama dengan kemarin.</li>
+          <li><b>Tahap</b> naik otomatis tiap 6 sesi selesai (maks. tahap 3): tahanan dan rep bertambah. Kalau tahap 3 terasa mudah, naikkan level.</li>
+        </ul></section>
+        <section><h3>Apa kata penelitian</h3><ul>
+          <li>Dorey dkk. (2004): pria dengan disfungsi ereksi yang rutin latihan dasar panggul selama 3 bulan, sekitar 40% kembali normal dan sekitar 35% membaik.</li>
+          <li>Latihan dasar panggul juga diteliti untuk ejakulasi dini (mis. Pastore dkk., 2014) dengan hasil yang menjanjikan.</li>
+          <li>Hasil biasanya mulai terasa setelah 4–6 minggu rutin. Konsisten lebih penting daripada berat.</li>
+        </ul></section>
+        <section><h3>Kapan berhenti &amp; ke dokter</h3><ul>
+          <li>Nyeri panggul, nyeri saat ejakulasi atau sulit buang air bisa tanda otot <b>terlalu tegang</b>. Fokus ke reverse kegel dan hari Pemulihan, lalu periksa ke dokter atau fisioterapis dasar panggul.</li>
+          <li>Masalah ereksi bisa jadi tanda awal gangguan jantung, pembuluh darah atau diabetes. Latihan ini pendukung, bukan pengganti periksa ke dokter.</li>
+          <li>Baru operasi prostat/hernia atau cedera pangkal paha: tanya dokter dulu. Copenhagen plank dan cossack squat berat untuk pangkal paha, mulai dari versi paling ringan.</li>
+        </ul></section>
+      </div>
+      <p class="fine">Informasi umum, bukan pengganti saran medis. Data latihan hanya tersimpan di browser HP ini.</p>
+    </div>
+  </main>
+</div>
+
+<div id="player" aria-live="polite">
+  <div class="ptop">
+    <button class="ic" id="pClose" aria-label="Tutup"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="grow"><div class="blk" id="pBlk"></div></div>
+    <button class="ic" id="pSnd" aria-label="Bunyi"><svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg></button>
+    <button class="ic" id="pVoice" aria-label="Suara pemandu"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg></button>
+  </div>
+  <div class="pbar"><i id="pProg"></i></div>
+  <div id="pMain" style="display:flex;flex-direction:column;flex:1">
+    <div id="exName"></div>
+    <div id="repInfo"></div>
+    <div class="stage">
+      <svg id="art" viewBox="0 0 300 300" aria-hidden="true">
+        <circle cx="150" cy="150" r="140" fill="#0f3236"/>
+        <circle cx="150" cy="150" r="132" fill="none" stroke="#1c4a51" stroke-width="10"/>
+        <circle id="ring" cx="150" cy="150" r="132" fill="none" stroke="#5fd3b6" stroke-width="10" stroke-linecap="round" stroke-dasharray="829.4" stroke-dashoffset="829.4" transform="rotate(-90 150 150)"/>
+        <circle cx="150" cy="150" r="118" fill="#123c41"/>
+        <g id="gPelvis">
+          <path d="M98 62 C126 110 124 178 92 226" fill="none" stroke="#efe4cc" stroke-width="16" stroke-linecap="round"/>
+          <path d="M98 62 C126 110 124 178 92 226" fill="none" stroke="#123c41" stroke-width="3" stroke-linecap="round"/>
+          <path id="blad" d="M176 96c26 0 44 18 44 42s-20 40-46 40-42-14-42-38 18-44 44-44z" fill="#f2c84b"/>
+          <ellipse cx="226" cy="214" rx="16" ry="28" transform="rotate(32 226 214)" fill="#efe4cc"/>
+          <path id="sling" class="sling" d="M94 222 Q160 268 222 228" fill="none" stroke="#3fa894" stroke-width="22" stroke-linecap="round"/>
+          <path id="sling2" class="sling" d="M94 222 Q160 268 222 228" fill="none" stroke="#0f3236" stroke-width="22" stroke-dasharray="1.6 13" opacity=".45"/>
+        </g>
+        <g id="gLimb" style="display:none" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <line x1="40" y1="252" x2="260" y2="252" stroke="#2c5d64" stroke-width="4"/>
+          <rect id="bench" x="214" y="196" width="50" height="56" rx="6" fill="#2c5d64" stroke="none"/>
+          <path id="pBody" stroke="#efe4cc" stroke-width="13"/>
+          <path id="pMove" stroke="#f2c84b" stroke-width="13"/>
+          <circle id="head" r="15" fill="#efe4cc" stroke="none"/>
+        </g>
+        <g id="gBreath" style="display:none">
+          <circle id="br1" cx="150" cy="150" r="60" fill="#5fd3b6" opacity=".18"/>
+          <circle id="br2" cx="150" cy="150" r="40" fill="#5fd3b6" opacity=".55"/>
+        </g>
+      </svg>
+      <div class="meter" id="meter"><span class="up">ATAS</span><div class="tr"></div><span style="bottom:100%">3</span><span style="bottom:75%">2</span><span style="bottom:50%">1</span><div class="kn" id="knob"></div></div>
+    </div>
+    <div id="phase"></div>
+    <div id="count"></div>
+    <div id="cue"></div>
+    <div id="next"></div>
+    <div class="ctr">
+      <button class="ic" id="pPrev" aria-label="Gerakan sebelumnya"><svg viewBox="0 0 24 24"><path d="M6 5v14M19 5l-9 7 9 7z"/></svg></button>
+      <button class="ic play" id="pPlay" aria-label="Jeda/lanjut"><svg viewBox="0 0 24 24" id="playIco"></svg></button>
+      <button class="ic" id="pNext" aria-label="Gerakan berikutnya"><svg viewBox="0 0 24 24"><path d="M18 5v14M5 5l9 7-9 7z"/></svg></button>
+    </div>
+  </div>
+  <div id="done">
+    <h2>Sesi selesai</h2>
+    <p id="doneTxt"></p>
+    <button class="btn" id="doneBtn">Tutup</button>
+  </div>
+</div>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const load=()=>{try{return JSON.parse(localStorage.getItem('lip1'))||{}}catch(e){return{}}};
+let S=Object.assign({level:1,lvCount:0,sound:true,voice:true,hist:{}},load());
+const save=()=>{try{localStorage.setItem('lip1',JSON.stringify(S))}catch(e){}};
+
+const DAYS=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const MON=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const key=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const dnum=d=>Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);
+const fmt=d=>DAYS[d.getDay()]+', '+d.getDate()+' '+MON[d.getMonth()];
+const LVN=['','Pemula','Menengah','Lanjut'];
+const BL={pf:{n:'Dasar Panggul',c:'var(--mint)'},ad:{n:'Adduktor',c:'var(--yel)'},hf:{n:'Hip Flexor',c:'var(--coral)'},cd:{n:'Pendinginan',c:'var(--cd)'}};
+
+const TH={
+0:{n:'Pemulihan',d:'Hari ringan: fokus merilekskan dasar panggul dan melenturkan pinggul. Otot tumbuh saat pulih.',pf:['pf_breath','pf_relax','pf_sub'],k:[1,1,3]},
+1:{n:'Kekuatan',d:'Kontraksi maksimal dengan tahanan penuh. Fondasi kekuatan dan kekerasan.',pf:['pf_hold',['pf_stand','pf_combo'],'pf_relax'],k:[2,2,2]},
+2:{n:'Kecepatan',d:'Kontraksi cepat dan tajam untuk melatih refleks otot saat dibutuhkan.',pf:['pf_quick',['pf_combo','pf_hold'],'pf_relax'],k:[2,2,2]},
+3:{n:'Daya Tahan',d:'Tahanan panjang di intensitas sedang. Melatih stamina supaya tidak cepat lelah.',pf:['pf_sub',['pf_hold','pf_stand'],'pf_relax'],k:[2,2,2]},
+4:{n:'Kontrol',d:'Naik-turun bertahap seperti lift. Melatih kendali halus, kunci untuk bisa menahan diri.',pf:['pf_elev',['pf_quick','pf_sub'],'pf_relax'],k:[2,2,2]},
+5:{n:'Power',d:'Piramida tahanan dan ledakan cepat. Sesi paling menantang minggu ini.',pf:['pf_pyr','pf_quick','pf_relax'],k:[2,2,2]},
+6:{n:'Kombinasi',d:'Semua kemampuan dalam satu sesi: kuat, cepat, terkendali.',pf:[['pf_hold','pf_stand'],'pf_elev','pf_combo','pf_relax'],k:[2,2,2]}};
+
+const P0=(L,p,rec)=>({L,p,rec,hold:Math.min(10,[0,5,8,10][L]+p),reps:[0,8,10,12][L]+p,sets:rec?1:[0,1,2,3][L],quick:[0,10,15,20][L]+p*2,sub:[0,15,20,30][L]+p*5-(rec?5:0),st:[0,30,40,45][L],rm:[0,1.5,1,1][L]});
+const at=(a,P)=>a[P.L];
+const EX={
+pf_hold:{n:'Tahan Kuat',b:'pf',k:'kegel',f:'pelvis',d:'Kontraksi maksimal lalu tahan. Seperti menahan kencing dan buang angin sekaligus.',how:['Berbaring, lutut ditekuk, napas santai.','Angkat dasar panggul ke atas-dalam sekuat mungkin.','Tahan sambil tetap bernapas, lalu lepaskan penuh.'],rx:P=>({sets:P.sets,reps:P.reps,hold:P.hold,rest:Math.ceil(P.hold*P.rm)})},
+pf_stand:{n:'Kegel Berdiri',b:'pf',k:'kegel',f:'pelvis',d:'Tahan kuat dalam posisi berdiri, melawan gravitasi seperti kondisi sehari-hari.',how:['Berdiri, kaki selebar pinggul, lutut tidak dikunci.','Kencangkan dasar panggul tanpa meremas pantat.','Tahan, lalu lepas pelan.'],rx:P=>({sets:Math.max(1,P.sets-1),reps:P.reps,hold:Math.max(5,P.hold-2),rest:Math.ceil(Math.max(5,P.hold-2)*P.rm)})},
+pf_quick:{n:'Kedipan Cepat',b:'pf',k:'quick',f:'pelvis',d:'Kencang-lepas secepat mungkin. Melatih serat otot cepat untuk refleks.',how:['Kencangkan sekuat dan secepat mungkin.','Langsung lepas penuh.','Jaga ritme, jangan sampai otot setengah tegang terus.'],rx:P=>({sets:P.sets,reps:P.quick,on:1,off:P.L==1?1.5:1})},
+pf_elev:{n:'Lift 3 Lantai',b:'pf',k:'elev',f:'pelvis',d:'Naikkan kontraksi bertahap 30%, 60%, 100%, lalu turunkan bertahap.',how:['Lantai 1: kencangkan sedikit.','Lantai 2: tambah, lantai 3: penuh dan tahan.','Turunkan lantai demi lantai, jangan langsung jatuh.'],rx:P=>({sets:Math.max(1,P.sets-1),reps:at([0,5,6,8],P)+P.p,hold:Math.min(6,3+P.L),rest:6})},
+pf_sub:{n:'Tahan Panjang 50%',b:'pf',k:'sub',f:'pelvis',d:'Kontraksi setengah tenaga yang ditahan lama. Melatih stamina dasar panggul.',how:['Kencangkan sekitar setengah tenaga.','Tahan stabil, napas tetap normal.','Kalau mulai bergetar, lepas lebih awal.'],rx:P=>({sets:1,reps:P.rec?3:at([0,3,4,5],P),hold:P.sub,rest:10})},
+pf_pyr:{n:'Piramida',b:'pf',k:'pyr',f:'pelvis',d:'Durasi tahan naik lalu turun. Kekuatan dan daya tahan dalam satu rangkaian.',how:['Tiap rep: kencang penuh, tahan sesuai hitungan.','Istirahat sama panjang dengan tahanannya.','Fokus kualitas di puncak piramida.'],rx:P=>({sets:P.L==3?2:1,holds:[null,[3,5,7,5,3],[3,5,7,9,7,5,3],[4,6,8,10,8,6,4]][P.L]})},
+pf_combo:{n:'Tahan + Kedip',b:'pf',k:'combo',f:'pelvis',d:'Tahan kuat, lalu 3 kedipan ekstra di puncak. Melatih kunci ulang saat sudah lelah.',how:['Kencangkan penuh dan tahan.','Di akhir: kendurkan sedikit, kunci lagi, 3 kali.','Lepas penuh lalu istirahat.'],rx:P=>({sets:Math.max(1,P.sets-1),reps:Math.max(5,P.reps-3),hold:Math.max(4,P.hold-2),rest:Math.ceil(Math.max(4,P.hold-2)*P.rm)})},
+pf_relax:{n:'Reverse Kegel',b:'pf',k:'relax',f:'pelvis',d:'Kebalikan kegel: biarkan dasar panggul turun dan melebar saat tarik napas. Penting untuk kontrol dan mencegah otot terlalu tegang.',how:['Tarik napas ke perut, rasakan area perineum turun dan mengembang.','Tidak mengejan, cukup dibiarkan rileks.','Buang napas, otot kembali netral sendiri.'],rx:P=>({reps:P.rec?10:6})},
+pf_breath:{n:'Napas Diafragma',b:'pf',k:'relax',f:'pelvis',d:'Napas dalam yang menyelaraskan diafragma dan dasar panggul.',how:['Satu tangan di dada, satu di perut.','Tarik napas: perut naik, dada diam.','Buang napas pelan lewat mulut.'],rx:P=>({reps:8})},
+ad_squeeze:{n:'Jepit Bantal',b:'ad',k:'iso',f:'adduct',d:'Berbaring, lutut ditekuk, bantal atau bola di antara lutut. Jepit kuat.',how:['Berbaring, lutut ditekuk, bantal di antara lutut.','Jepit sekuat mungkin, napas tetap jalan.','Lepas pelan.'],rx:P=>({sets:P.sets,reps:P.reps,hold:P.hold,rest:5})},
+ad_side:{n:'Angkat Kaki Dalam',b:'ad',k:'tempo',side:1,f:'adduct',d:'Tidur miring, kaki atas ditekuk ke depan, angkat kaki bawah yang lurus.',how:['Tidur miring, kaki atas menyilang ke depan.','Angkat kaki bawah lurus setinggi mungkin.','Turunkan pelan tanpa menyentuh lantai.'],rx:P=>({sets:P.sets,reps:at([0,8,12,15],P)+P.p,tempo:[['Angkat',2,0,3,'Angkat kaki bawah'],['Tahan',1,3,3,'Rasakan paha dalam'],['Turun',3,3,0,'Turunkan pelan']]})},
+ad_sumo:{n:'Sumo Squat',b:'ad',k:'tempo',f:'squat',d:'Kaki lebar, ujung kaki menghadap keluar. Turun pelan, dorong naik dari paha dalam.',how:['Kaki lebih lebar dari bahu, jari kaki serong keluar.','Turun pelan, lutut searah jari kaki.','Naik sambil meremas paha dalam.'],rx:P=>({sets:P.sets,reps:at([0,10,12,15],P)+P.p,tempo:[['Turun',3,0,3,'Punggung tegak'],['Tahan',1,3,3,'Lutut terbuka'],['Naik',2,3,0,'Remas paha dalam']]})},
+ad_cphk:{n:'Copenhagen Plank (Lutut)',b:'ad',k:'iso',side:1,f:'plank',d:'Side plank dengan lutut atas di kursi/sofa. Versi aman untuk paha dalam.',how:['Side plank bertumpu siku.','Lutut kaki atas di kursi, kaki bawah ikut terangkat bila bisa.','Angkat pinggul lurus, tahan.'],rx:P=>({sets:1,reps:at([0,2,3,3],P),hold:at([0,10,15,20],P)+P.p*2,rest:10})},
+ad_cph:{n:'Copenhagen Plank',b:'ad',k:'iso',side:1,min:3,f:'plank',d:'Versi kaki lurus: pergelangan kaki atas di bangku. Sangat berat untuk paha dalam.',how:['Side plank bertumpu siku.','Pergelangan kaki atas di bangku.','Angkat pinggul lurus, tahan.'],rx:P=>({sets:1,reps:3,hold:20+P.p*3,rest:12})},
+ad_lateral:{n:'Lateral Lunge',b:'ad',k:'tempo',side:1,min:2,f:'squat',d:'Langkah lebar ke samping, duduk di satu kaki, kaki lain lurus.',how:['Berdiri, langkah lebar ke samping.','Tekuk lutut kaki yang melangkah, kaki lain lurus.','Dorong kembali ke tengah.'],rx:P=>({sets:P.sets,reps:at([0,6,8,10],P)+P.p,tempo:[['Turun ke samping',3,0,3,'Pinggul ke belakang'],['Tahan',1,3,3,'Rasakan tarikan paha dalam'],['Dorong balik',2,3,0,'Kembali ke tengah']]})},
+ad_cossack:{n:'Cossack Squat',b:'ad',k:'tempo',side:1,min:3,f:'squat',d:'Lateral lunge sedalam mungkin, jari kaki yang lurus menghadap atas.',how:['Kaki sangat lebar.','Turun ke satu sisi sedalam mungkin.','Kaki lurus, jari menghadap atas.'],rx:P=>({sets:2,reps:6+P.p,tempo:[['Turun ke samping',3,0,3,'Sedalam yang nyaman'],['Tahan',2,3,3,'Dada tegak'],['Naik',2,3,0,'Kembali ke tengah']]})},
+ad_bridge:{n:'Bridge + Jepit Bantal',b:'ad',k:'tempo',f:'bridge',d:'Glute bridge sambil menjepit bantal. Paha dalam, bokong dan dasar panggul bekerja bareng.',how:['Berbaring, lutut ditekuk, bantal di antara lutut.','Angkat pinggul sambil menjepit bantal dan kencangkan dasar panggul.','Turunkan ruas demi ruas.'],rx:P=>({sets:P.sets,reps:P.reps,tempo:[['Angkat + jepit',2,0,3,'Pinggul naik, bantal dijepit'],['Tahan',P.hold>6?3:2,3,3,'Kencangkan juga dasar panggul'],['Turun',3,3,0,'Turun pelan']]})},
+hf_march:{n:'Angkat Lutut Berdiri',b:'hf',k:'tempo',side:1,f:'lift',d:'Angkat lutut setinggi pinggul dan tahan. Badan tetap tegak.',how:['Berdiri tegak, boleh pegangan dinding.','Angkat lutut setinggi pinggul atau lebih.','Tahan, turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Angkat lutut',1.5,0,3,'Setinggi pinggul'],['Tahan',at([0,2,3,4],P),3,3,'Badan tegak'],['Turun',2,3,0,'Pelan']]})},
+hf_slr:{n:'Angkat Kaki Lurus',b:'hf',k:'tempo',side:1,f:'lift',d:'Berbaring, satu lutut ditekuk, angkat kaki satunya yang lurus.',how:['Berbaring, satu kaki ditekuk.','Kaki lain lurus, angkat setinggi lutut kaki yang ditekuk.','Turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Angkat',2,0,2.4,'Kaki tetap lurus'],['Tahan',2,2.4,2.4,'Perut dikencangkan'],['Turun',3,2.4,0,'Pelan']]})},
+hf_deadbug:{n:'Dead Bug',b:'hf',k:'tempo',side:1,f:'lift',d:'Telentang, lutut 90°. Ulurkan satu kaki pelan lalu tarik kembali.',how:['Telentang, lutut dan pinggul 90°, tangan ke atas.','Ulurkan satu kaki sampai hampir lantai.','Punggung bawah tetap menempel lantai.'],rx:P=>({sets:P.sets,reps:at([0,6,8,10],P)+P.p,tempo:[['Ulurkan',3,3,0.5,'Punggung bawah menempel'],['Tahan',1,0.5,0.5,'Kaki melayang'],['Tarik kembali',2,0.5,3,'Hip flexor bekerja']]})},
+hf_seated:{n:'Angkat Lutut Duduk',b:'hf',k:'tempo',f:'lift',d:'Duduk di ujung kursi, condong sedikit ke belakang, angkat kedua lutut.',how:['Duduk di ujung kursi, tangan pegang sisi kursi.','Condong sedikit ke belakang.','Angkat kedua lutut ke dada, turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Angkat kedua lutut',1.5,0,3,'Ke arah dada'],['Tahan',2,3,3,'Perut kencang'],['Turun',2.5,3,0,'Kaki tidak menyentuh lantai']]})},
+hf_rev:{n:'Reverse Crunch',b:'hf',k:'tempo',f:'lift',d:'Telentang, tarik lutut ke dada sampai pinggul sedikit terangkat.',how:['Telentang, lutut ditekuk 90°.','Tarik lutut ke dada, pinggul sedikit naik.','Turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Tarik lutut ke dada',2,0,3,'Pinggul sedikit naik'],['Tahan',1,3,3,'Buang napas'],['Turun pelan',3,3,0,'Kontrol']]})},
+hf_iso:{n:'Tahan Lutut 90°',b:'hf',k:'iso',side:1,min:2,f:'lift',d:'Berdiri dengan satu lutut di atas pinggul dan tahan tanpa bantuan tangan.',how:['Berdiri tegak.','Angkat lutut di atas tinggi pinggul.','Tahan, badan jangan condong ke belakang.'],rx:P=>({sets:1,reps:3,hold:at([0,10,15,20],P)+P.p*2,rest:8})},
+hf_mtn:{n:'Mountain Climber Lambat',b:'hf',k:'tempo',side:1,min:2,f:'lift',d:'Posisi push-up, tarik lutut ke dada pelan dan terkontrol.',how:['Posisi push-up, badan lurus.','Tarik satu lutut ke dada, tahan.','Kembali, ganti kaki setelah set selesai.'],rx:P=>({sets:P.sets,reps:8+P.p,tempo:[['Tarik lutut',1.5,0,3,'Pinggul tetap rendah'],['Tahan',1,3,3,'Perut kencang'],['Kembali',1.5,3,0,'Pelan']]})},
+hf_hang:{n:'Hanging Knee Raise',b:'hf',k:'tempo',min:3,f:'lift',d:'Bergantung di palang, angkat lutut ke dada. Tanpa palang: ganti Angkat Lutut Duduk.',how:['Bergantung di palang, bahu aktif.','Angkat lutut ke dada tanpa mengayun.','Turunkan 3 detik.'],rx:P=>({sets:P.sets,reps:8+P.p,tempo:[['Angkat lutut',1.5,0,3,'Tanpa ayunan'],['Tahan',2,3,3,'Lutut di dada'],['Turun',3,3,0,'Kontrol']]})},
+cd_hf:{n:'Peregangan Hip Flexor',b:'cd',k:'stretch',side:1,f:'breath',d:'Berlutut satu kaki, dorong pinggul ke depan, kencangkan pantat.',how:['Berlutut satu kaki, kaki lain di depan.','Kencangkan pantat, dorong pinggul ke depan.','Rasakan tarikan di depan paha atas.'],rx:P=>({hold:P.st})},
+cd_butter:{n:'Butterfly Stretch',b:'cd',k:'stretch',f:'breath',d:'Duduk, telapak kaki saling menempel, biarkan lutut turun.',how:['Duduk, telapak kaki menempel.','Tarik tumit mendekat.','Condong sedikit ke depan, napas panjang.'],rx:P=>({hold:P.st+15})},
+cd_child:{n:"Child's Pose + Napas Panggul",b:'cd',k:'stretch',f:'breath',d:'Lutut lebar, badan rebah ke depan. Napas ke arah panggul.',how:['Berlutut, lutut lebar, duduk di tumit.','Rebahkan badan ke depan, tangan lurus.','Tarik napas, rasakan dasar panggul mengembang.'],rx:P=>({hold:45})},
+cd_happy:{n:'Happy Baby',b:'cd',k:'stretch',f:'breath',d:'Telentang, pegang telapak kaki, tarik lutut ke samping ketiak.',how:['Telentang, tekuk lutut ke dada.','Pegang telapak kaki bagian dalam.','Tarik lutut ke samping, punggung tetap di lantai.'],rx:P=>({hold:P.st+10})},
+cd_9090:{n:'Peregangan 90/90',b:'cd',k:'stretch',side:1,f:'breath',d:'Duduk dengan kedua lutut 90°, satu di depan satu di samping.',how:['Duduk, kaki depan dan belakang sama-sama 90°.','Dada tegak, condong ke kaki depan.','Napas panjang.'],rx:P=>({hold:P.st})},
+cd_frog:{n:'Frog Stretch',b:'cd',k:'stretch',min:2,f:'breath',d:'Merangkak, buka lutut lebar ke samping, dorong pinggul ke belakang.',how:['Posisi merangkak, lutut dibuka lebar.','Telapak kaki menghadap keluar.','Dorong pinggul pelan ke belakang.'],rx:P=>({hold:P.st})},
+cd_couch:{n:'Couch Stretch',b:'cd',k:'stretch',side:1,min:3,f:'breath',d:'Versi berat peregangan hip flexor dengan punggung kaki di sofa/dinding.',how:['Lutut belakang di dekat dinding/sofa, punggung kaki menempel.','Kaki depan menapak.','Tegakkan badan pelan, kencangkan pantat.'],rx:P=>({hold:P.st})}
+};
+const POOL={ad:['ad_squeeze','ad_side','ad_sumo','ad_cphk','ad_bridge','ad_lateral','ad_cossack','ad_cph'],hf:['hf_march','hf_slr','hf_deadbug','hf_seated','hf_rev','hf_iso','hf_mtn','hf_hang'],cd:['cd_hf','cd_butter','cd_child','cd_happy','cd_9090','cd_frog','cd_couch']};
+
+const stage=()=>Math.min(3,Math.floor((S.lvCount||0)/6));
+function plan(d){
+  const dn=dnum(d),wk=Math.floor(dn/7),t=TH[d.getDay()],L=S.level,P=P0(L,stage(),d.getDay()==0);
+  const items=t.pf.map(x=>Array.isArray(x)?x[wk%x.length]:x);
+  ['ad','hf','cd'].forEach((b,bi)=>{const pool=POOL[b].filter(id=>(EX[id].min||1)<=L),n=t.k[bi];const s=(dn*n+bi*3)%pool.length;for(let i=0;i<n;i++)items.push(pool[(s+i)%pool.length])});
+  return {t,P,items:items.map(id=>({id,ex:EX[id]}))};
+}
+const R=(lb,d,a,b,cue,r)=>({lb,d,a,b,cue:cue||'',r:r||d});
+function build(ex,P){
+  const r=ex.rx(P);let rep,txt,sets=r.sets||1,reps=r.reps||1;const sd=ex.side?' / sisi':'';let seqs=null;
+  switch(ex.k){
+  case 'kegel':rep=[R('Kencangkan',1.5,0,3,'Angkat ke atas dan ke dalam'),R('Tahan',r.hold,3,3,'Napas tetap jalan, pantat rileks'),R('Lepas',2,3,0,'Lepaskan penuh'),R('Istirahat',r.rest,0,0,'Rileks total')];txt=`${sets} set × ${reps} rep · tahan ${r.hold} dtk · istirahat ${r.rest} dtk`;break;
+  case 'quick':rep=[R('Kencang',r.on,0,3,'Cepat dan tajam',.3),R('Lepas',r.off,3,0,'Lepas penuh',.3)];txt=`${sets} set × ${reps} kedipan cepat`;break;
+  case 'elev':rep=[R('Lantai 1',2,0,1,'Sedikit saja'),R('Lantai 2',2,1,2,'Tambah sedikit'),R('Lantai 3',r.hold,2,3,'Penuh, tahan di puncak',1),R('Turun ke 2',2,3,2,'Turun bertahap'),R('Turun ke 1',2,2,1,'Masih sedikit tegang'),R('Lepas',2,1,0,'Lepas penuh'),R('Istirahat',r.rest,0,0,'Rileks')];txt=`${sets} set × ${reps} rep · puncak ${r.hold} dtk`;break;
+  case 'sub':rep=[R('Kencangkan 50%',2,0,1.5,'Setengah tenaga'),R('Tahan ringan',r.hold,1.5,1.5,'Stabil, napas normal'),R('Lepas',3,1.5,0,'Pelan'),R('Istirahat',r.rest,0,0,'Rileks')];txt=`${reps} rep · tahan ${r.hold} dtk di 50% · istirahat ${r.rest} dtk`;break;
+  case 'pyr':seqs=r.holds.map(h=>[R('Kencangkan',1,0,3,'Penuh'),R('Tahan '+h,h,3,3,'Napas tetap jalan'),R('Lepas',1.5,3,0,'Lepas penuh'),R('Istirahat',h,0,0,'Rileks')]);reps=r.holds.length;txt=`${sets} set piramida ${r.holds.join('-')} dtk`;break;
+  case 'combo':rep=[R('Kencangkan',1.5,0,3,'Penuh'),R('Tahan',r.hold,3,3,'Napas jalan'),R('Kedip',.6,3,2,''),R('Kunci lagi',.6,2,3,''),R('Kedip',.6,3,2,''),R('Kunci lagi',.6,2,3,''),R('Kedip',.6,3,2,''),R('Kunci lagi',.6,2,3,''),R('Lepas',2,3,0,'Lepas penuh'),R('Istirahat',r.rest,0,0,'Rileks')];txt=`${sets} set × ${reps} rep · tahan ${r.hold} dtk + 3 kedip`;break;
+  case 'relax':rep=ex===EX.pf_breath?[R('Tarik napas',4,0,-.6,'Perut naik, dada diam'),R('Buang napas',6,-.6,0,'Pelan lewat mulut')]:[R('Tarik napas, turunkan',4,0,-1,'Perineum turun & melebar, tanpa mengejan'),R('Buang napas, kembali',5,-1,0,'Biarkan kembali sendiri')];txt=`${reps} napas · tarik ${rep[0].d} dtk, buang ${rep[1].d} dtk`;break;
+  case 'tempo':rep=r.tempo.map(x=>R(x[0],x[1],x[2],x[3],x[4]));txt=`${sets} set × ${reps} rep${sd} · tempo ${r.tempo.map(x=>x[1]).join('-')} dtk`;break;
+  case 'iso':rep=[R('Tekan',1,0,3,'Masuk posisi'),R('Tahan',r.hold,3,3,'Napas tetap jalan'),R('Lepas',1,3,0,''),R('Istirahat',r.rest,0,0,'Rileks')];txt=`${sets>1?sets+' set × ':''}${reps} rep${sd} · tahan ${r.hold} dtk`;break;
+  case 'stretch':rep=[R('Tahan regangan',r.hold,0,0,'Napas panjang, rileks di tiap buangan')];rep[0].br=1;txt=`${r.hold} dtk${sd}`;break;}
+  return {txt,sets,reps,rep,seqs};
+}
+function steps(pl,from){
+  const out=[];
+  pl.items.forEach((it,ei)=>{if(ei<from)return;const b=build(it.ex,pl.P),sides=it.ex.side?['Kiri','Kanan']:[''];
+    out.push({lb:'Siap-siap',d:pl.P.L==1?9:7,a:0,b:0,r:1,prep:1,ei,cue:''});
+    for(let s=0;s<b.sets;s++){sides.forEach((sd,si)=>{
+      if(si>0)out.push({lb:'Ganti sisi',d:6,a:0,b:0,r:1,ei,cue:'Pindah ke sisi kanan',side:'Kanan',set:s+1,sets:b.sets});
+      for(let k=0;k<b.reps;k++){const seq=b.seqs?b.seqs[k]:b.rep;seq.forEach((st,j)=>{
+        const last=k==b.reps-1&&j==seq.length-1&&st.lb=='Istirahat';if(last)return;
+        out.push(Object.assign({},st,{ei,rep:k+1,reps:b.reps,set:s+1,sets:b.sets,side:sd}))})}});
+      if(s<b.sets-1)out.push({lb:'Istirahat antar set',d:it.ex.b=='pf'?20:30,a:0,b:0,r:1,ei,cue:'Goyangkan kaki, napas santai',set:s+1,sets:b.sets});}
+  });return out;
+}
+const mins=pl=>Math.max(1,Math.round(steps(pl,0).reduce((a,s)=>a+s.d,0)/60));
+
+/* ---------- views ---------- */
+let view=new Date();
+const today=()=>new Date();
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function heroArt(){const c=$('#art').cloneNode(true);c.removeAttribute('id');c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));c.querySelectorAll('.sling').forEach(e=>e.setAttribute('d','M94 222 Q160 212 222 228'));c.querySelectorAll('circle')[2].setAttribute('stroke-dashoffset','240');return c.outerHTML}
+function renderToday(){
+  const pl=plan(view),isT=key(view)==key(today()),done=S.hist[key(view)],p=stage();
+  let h='';
+  if(!isT)h+=`<div class="notice">Melihat program ${fmt(view)}<button class="btn small" id="backT">Kembali ke hari ini</button></div>`;
+  if(p==3&&S.level<3)h+=`<div class="notice">Kamu sudah konsisten di tahap 3. Siap naik ke ${LVN[S.level+1]}?<button class="btn small" id="lvUp">Naik level</button></div>`;
+  h+=`<section class="hero"><div><div class="date">${fmt(view)}${done?' · <span class="ok">Selesai</span>':''}</div><h2>${pl.t.n}</h2><p>${pl.t.d}</p>
+  <div class="chips"><span class="chip">± ${mins(pl)} menit</span><span class="chip">${pl.items.length} gerakan</span><span class="chip">${LVN[S.level]} · tahap ${p+1}/4</span></div>
+  <button class="btn go" data-start="0">${done?'Ulangi sesi':'Mulai sesi'}</button></div><div class="heroart">${heroArt()}</div></section>
+  <div class="settings"><label>Level</label><div class="seg">${[1,2,3].map(l=>`<button data-lv="${l}" aria-pressed="${S.level==l}">${LVN[l]}</button>`).join('')}</div>
+  <label class="tog"><input type="checkbox" id="sSnd" ${S.sound?'checked':''}> Bunyi</label><label class="tog"><input type="checkbox" id="sVo" ${S.voice?'checked':''}> Suara pemandu</label></div>`;
+  ['pf','ad','hf','cd'].forEach(b=>{const its=pl.items.map((it,i)=>({...it,i})).filter(it=>it.ex.b==b);if(!its.length)return;
+    h+=`<div class="block"><div class="bh"><i class="dot" style="background:${BL[b].c}"></i><h3>${BL[b].n}</h3><span>${its.length} gerakan</span></div><div class="cards">`+
+    its.map(it=>`<article class="card" style="--c:${BL[b].c}"><h4>${esc(it.ex.n)}</h4><div class="rx">${build(it.ex,pl.P).txt}</div><p>${esc(it.ex.d)}</p><details><summary>Cara melakukan</summary><ol>${it.ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></details><button class="btn ghost small" data-start="${it.i}">Mulai dari sini</button></article>`).join('')+`</div></div>`;});
+  $('#v-today').innerHTML=h;
+}
+function renderWeek(){
+  const t0=today(),mon=new Date(t0);mon.setDate(t0.getDate()-((t0.getDay()+6)%7));
+  $('#v-week').innerHTML='<div class="week">'+[0,1,2,3,4,5,6].map(i=>{const d=new Date(mon);d.setDate(mon.getDate()+i);const pl=plan(d),k=key(d);
+    return `<button class="wrow ${k==key(t0)?'today':''}" data-day="${k}"><div><b>${DAYS[d.getDay()]}</b><small>${d.getDate()} ${MON[d.getMonth()]}</small></div><div><b>${pl.t.n}</b><small>${pl.items.map(x=>x.ex.n).slice(0,4).join(' · ')}…</small></div><div>${S.hist[k]?'<span class="ok">✓ Selesai</span>':`<small>${mins(pl)} mnt</small>`}</div></button>`}).join('')+'</div><p class="fine">Ketuk satu hari untuk melihat atau memulai programnya.</p>';
+}
+function streak(){let d=today(),n=0;if(!S.hist[key(d)])d.setDate(d.getDate()-1);while(S.hist[key(d)]){n++;d.setDate(d.getDate()-1)}return n}
+function renderHist(){
+  const ks=Object.keys(S.hist),tot=ks.reduce((a,k)=>a+(S.hist[k].m||0),0),t0=today();
+  const start=new Date(t0);start.setDate(t0.getDate()-((t0.getDay()+6)%7)-28);
+  let cal=['Sn','Sl','Rb','Km','Jm','Sb','Mg'].map(x=>`<div class="h">${x}</div>`).join('');
+  for(let i=0;i<35;i++){const d=new Date(start);d.setDate(start.getDate()+i);const k=key(d);cal+=`<div class="${S.hist[k]?'on':''} ${k==key(t0)?'now':''}">${d>t0?'':d.getDate()}</div>`}
+  $('#v-hist').innerHTML=`<div class="stats"><div class="stat"><b>${streak()}</b><span>hari beruntun</span></div><div class="stat"><b>${ks.length}</b><span>sesi selesai</span></div><div class="stat"><b>${tot}</b><span>menit total</span></div><div class="stat"><b>${stage()+1}/4</b><span>tahap ${LVN[S.level]}</span></div></div><div class="cal">${cal}</div>`+(ks.length?'':'<div class="empty">Belum ada sesi. Selesaikan sesi pertamamu hari ini, kotak kalender akan terisi hijau.</div>')+`<p><button class="btn ghost small" id="reset">Hapus semua riwayat</button></p>`;
+}
+function show(v){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.v==v));['today','week','hist','guide'].forEach(x=>$('#v-'+x).hidden=x!=v);if(v=='today')renderToday();if(v=='week')renderWeek();if(v=='hist')renderHist();window.scrollTo(0,0)}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.classList.contains('tab'))return show(t.dataset.v);
+  if(t.dataset.start!=null)return startSession(+t.dataset.start);
+  if(t.dataset.lv){S.level=+t.dataset.lv;S.lvCount=0;save();return renderToday()}
+  if(t.dataset.day){const[y,m,d]=t.dataset.day.split('-').map(Number);view=new Date(y,m-1,d);return show('today')}
+  if(t.id=='backT'){view=today();return renderToday()}
+  if(t.id=='lvUp'){S.level++;S.lvCount=0;save();return renderToday()}
+  if(t.id=='reset'){if(t.dataset.sure){S.hist={};S.lvCount=0;save();renderHist()}else{t.dataset.sure=1;t.textContent='Ketuk lagi untuk menghapus'}}
+});
+document.addEventListener('change',e=>{if(e.target.id=='sSnd'){S.sound=e.target.checked;save()}if(e.target.id=='sVo'){S.voice=e.target.checked;save()}});
+
+/* ---------- player ---------- */
+let actx=null,run=null,raf=0,last=0,wl=null;
+function beep(f,ms,v){if(!S.sound||!actx)return;try{const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(v||.18,actx.currentTime);g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+ms/1000);o.connect(g).connect(actx.destination);o.start();o.stop(actx.currentTime+ms/1000)}catch(e){}}
+let idVoice=null;
+function say(t){if(!S.voice||!window.speechSynthesis)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='id-ID';if(idVoice)u.voice=idVoice;u.rate=1.05;speechSynthesis.speak(u)}catch(e){}}
+function pickVoice(){try{idVoice=speechSynthesis.getVoices().find(v=>/^id/i.test(v.lang))||null}catch(e){}}
+if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+const icoPlay='<path d="M7 4l13 8-13 8z"/>',icoPause='<path d="M7 4h3v16H7zM14 4h3v16h-3z"/>';
+function startSession(from){
+  try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume()}catch(e){}
+  const pl=plan(view);run={pl,st:steps(pl,from),i:0,t:0,play:true,key:key(view),tot:0,tick:-1};
+  run.tot=run.st.reduce((a,s)=>a+s.d,0);
+  $('#player').classList.add('open');$('#pMain').style.display='flex';$('#done').style.display='none';document.body.style.overflow='hidden';
+  try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(w=>wl=w).catch(()=>{})}catch(e){}
+  setTog();enter();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
+}
+function closeP(){run=null;cancelAnimationFrame(raf);$('#player').classList.remove('open');document.body.style.overflow='';try{speechSynthesis.cancel();wl&&wl.release()}catch(e){}show('today')}
+const cur=()=>run.st[run.i];
+function enter(){
+  const s=cur(),ex=run.pl.items[s.ei].ex;run.tick=-1;
+  const bl=BL[ex.b];$('#pBlk').textContent=bl.n+' · gerakan '+(s.ei+1)+'/'+run.pl.items.length;$('#pBlk').style.setProperty('--c',bl.c);
+  $('#exName').textContent=ex.n;
+  $('#repInfo').textContent=s.prep?build(ex,run.pl.P).txt:[s.rep?`Rep ${s.rep}/${s.reps}`:'',s.sets>1?`Set ${s.set}/${s.sets}`:'',s.side?`Sisi ${s.side.toLowerCase()}`:''].filter(Boolean).join(' · ');
+  $('#cue').innerHTML=s.prep?`${esc(ex.d)}<ol>${ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:esc(s.cue);
+  const nx=run.st[run.i+1];$('#next').textContent=nx?(nx.prep?'Berikutnya: '+run.pl.items[nx.ei].ex.n:'Berikutnya: '+nx.lb):'Terakhir';
+  const pel=ex.f=='pelvis';$('#gPelvis').style.display=pel?'':'none';$('#meter').style.visibility=pel?'visible':'hidden';
+  $('#gLimb').style.display=pel||ex.f=='breath'?'none':'';$('#gBreath').style.display=ex.f=='breath'?'':'none';$('#bench').style.display=ex.f=='plank'?'':'none';
+  const up=s.b>s.a||(s.a>=1.5&&s.a==s.b),col=s.prep?'var(--yel)':s.lb.startsWith('Istirahat')||s.lb=='Ganti sisi'?'var(--mute)':up?bl.c:'var(--ink)';
+  $('#phase').textContent=s.lb.toUpperCase();$('#phase').style.color=col;$('#ring').setAttribute('stroke',s.prep?'#f2c84b':ex.b=='pf'?'#5fd3b6':ex.b=='ad'?'#f2c84b':ex.b=='hf'?'#ff8a72':'#c9d6ff');
+  if(s.prep){beep(660,160);say(ex.n)}
+  else if(s.lb=='Ganti sisi'){beep(660,160);say('Ganti sisi kanan')}
+  else{beep(s.b>s.a?880:s.b<s.a?520:s.lb.startsWith('Istirahat')?440:760,s.d<1.5?70:160,s.d<1.5?.12:.18);if(s.d>=1.5)say(s.lb)}
+  if(navigator.vibrate&&s.d>=1.5)try{navigator.vibrate(40)}catch(e){}
+}
+function step(dir){if(!run)return;const ei=cur().ei;let target;
+  if(dir>0){target=run.st.findIndex((s,i)=>i>run.i&&s.ei>ei)}else{const first=run.st.findIndex(s=>s.ei==ei);target=(run.i-first<3&&ei>0)?run.st.findIndex(s=>s.ei==ei-1):first;if(target<0)target=first}
+  if(target<0)return finish();run.i=target;run.t=0;enter();}
+function finish(){
+  cancelAnimationFrame(raf);const m=Math.max(1,Math.round(run.tot/60)),k=run.key;
+  if(!S.hist[k]){S.lvCount=(S.lvCount||0)+1}S.hist[k]={m};save();beep(880,200);setTimeout(()=>beep(1175,300),220);say('Sesi selesai. Kerja bagus.');
+  $('#pMain').style.display='none';$('#done').style.display='block';
+  $('#doneTxt').textContent=`${run.pl.t.n} · sekitar ${m} menit. Rangkaian hari beruntun: ${streak()} hari. Besok programnya berganti.`;
+}
+const ease=x=>x<.5?2*x*x:1-((-2*x+2)**2)/2;
+function loop(ts){
+  if(!run)return;const dt=Math.min(.1,(ts-last)/1000);last=ts;
+  if(run.play){run.t+=dt;while(run&&run.t>=cur().d){run.t-=cur().d;run.i++;if(run.i>=run.st.length)return finish();enter()}}
+  draw();raf=requestAnimationFrame(loop);
+}
+function draw(){
+  const s=cur(),ex=run.pl.items[s.ei].ex,rem=Math.max(0,s.d-run.t),ri=Math.ceil(rem);
+  const lv=s.a==s.b?s.a:s.a+(s.b-s.a)*ease(Math.min(1,run.t/(s.r||s.d)));
+  $('#count').textContent=s.d<1.5?'':ri;
+  if(s.d>=4&&ri<=3&&ri>0&&ri!=run.tick){run.tick=ri;beep(1200,40,.08)}
+  $('#ring').setAttribute('stroke-dashoffset',(829.4*(1-run.t/s.d)).toFixed(1));
+  const done=run.st.slice(0,run.i).reduce((a,x)=>a+x.d,0)+run.t;$('#pProg').style.width=(done/run.tot*100).toFixed(1)+'%';
+  if(ex.f=='pelvis'){const y=(268-lv*19.3).toFixed(1),d=`M94 ${222-Math.max(0,lv)*2} Q160 ${y} 222 ${228-Math.max(0,lv)*2}`;$('#sling').setAttribute('d',d);$('#sling2').setAttribute('d',d);$('#blad').setAttribute('transform',`translate(0 ${(-lv*5).toFixed(1)})`);$('#knob').style.bottom=Math.max(0,Math.min(100,(lv+1)/4*100))+'%'}
+  else if(ex.f=='breath'){const ph=.5+.5*Math.sin(run.t*2*Math.PI/7-Math.PI/2);$('#br1').setAttribute('r',(70+40*ph).toFixed(1));$('#br2').setAttribute('r',(36+30*ph).toFixed(1))}
+  else limb(ex.f,Math.max(0,lv)/3);
+}
+const P2=(x,y)=>x.toFixed(1)+' '+y.toFixed(1);
+function limb(f,q){
+  let body='',mv='',hx=150,hy=60;
+  if(f=='lift'){const th=q*1.48,kx=140+52*Math.sin(th),ky=150+52*Math.cos(th);body='M140 82 L140 150 L140 250';mv=`M140 150 L${P2(kx,ky)} L${P2(kx+(q>.5?6:0),ky+50)}`;hx=140;hy=62}
+  else if(f=='adduct'){const a=(26-q*22)*Math.PI/180;body='M150 84 L150 150 M134 150 L166 150';mv=`M134 150 L${P2(134-100*Math.sin(a),150+100*Math.cos(a))} M166 150 L${P2(166+100*Math.sin(a),150+100*Math.cos(a))}`;hy=64}
+  else if(f=='squat'){const yh=128+q*58,kx=44+q*26,ky=yh+(252-yh)*.5;body=`M150 ${yh-72} L150 ${yh}`;mv=`M150 ${yh} L${P2(150-kx,ky)} L94 252 M150 ${yh} L${P2(150+kx,ky)} L206 252`;hy=yh-92}
+  else if(f=='plank'){const hyp=230-q*30;body=`M48 252 L84 252 L84 202`;mv=`M84 202 L${P2(156,hyp)} L238 194`;hx=66;hy=186}
+  else if(f=='bridge'){const hyy=238-q*48;body='M62 244 L120 250';mv=`M62 244 L${P2(132,hyy)} L196 176 L222 250`;hx=42;hy=236}
+  $('#pBody').setAttribute('d',body);$('#pMove').setAttribute('d',mv);$('#head').setAttribute('cx',hx);$('#head').setAttribute('cy',hy);
+}
+function setTog(){$('#pSnd').classList.toggle('off',!S.sound);$('#pVoice').classList.toggle('off',!S.voice);$('#playIco').innerHTML=run&&run.play?icoPause:icoPlay}
+$('#pPlay').onclick=()=>{if(!run)return;run.play=!run.play;try{actx&&actx.resume()}catch(e){}if(!run.play)try{speechSynthesis.cancel()}catch(e){}setTog()};
+$('#pNext').onclick=()=>step(1);$('#pPrev').onclick=()=>step(-1);
+$('#pClose').onclick=closeP;$('#doneBtn').onclick=closeP;
+$('#pSnd').onclick=()=>{S.sound=!S.sound;save();setTog()};
+$('#pVoice').onclick=()=>{S.voice=!S.voice;save();if(!S.voice)try{speechSynthesis.cancel()}catch(e){}setTog()};
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&run&&run.play){run.play=false;setTog()}});
+show('today');
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
