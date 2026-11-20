@@ -1,7 +1,5 @@
 {
   "name": "pctrain",
   "compatibility_date": "2026-06-01",
-  "workers_dev": true,
-  "preview_urls": false,
-  "assets": { "directory": "./public" }
+  "pages_build_output_dir": "./public"
 }
