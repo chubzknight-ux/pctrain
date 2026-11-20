@@ -61,14 +61,27 @@ button{font:inherit;color:inherit;cursor:pointer}
 .bh h3{font:400 22px/1.1 'Bowlby One',sans-serif;margin:0}
 .bh span{color:var(--mute);font-size:14px}
 .dot{width:12px;height:12px;border-radius:50%;flex:none;align-self:center}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px}
-.card{background:var(--panel);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:6px;border-left:4px solid var(--c)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:12px}
+.card{background:var(--panel);border-radius:16px;padding:14px;display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 14px;align-items:start;border-left:4px solid var(--c)}
 .card h4{margin:0;font-size:17px}
 .rx{font-weight:700;color:var(--c);font-size:15px}
 .card p{margin:0;color:var(--mute);font-size:15px}
 details summary{cursor:pointer;color:var(--ink);font-weight:600;font-size:14px;padding:4px 0}
 details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
-.card .btn{align-self:flex-start;margin-top:auto}
+.card svg.fig{width:96px;height:96px;grid-column:1;grid-row:1}
+.card .ct{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:4px}
+.card .cx{grid-column:1/-1;margin-top:8px}
+.card .cx .btn{margin-top:8px}
+.stp{margin:0 0 8px;padding-left:20px;color:var(--mute);font-size:15px}
+.cx .chip{display:inline-block;margin-right:8px;margin-top:6px}
+.fg .o{fill:none;stroke:#0e2d31;stroke-linecap:round;stroke-linejoin:round;stroke-width:16}
+.fg .f{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:11}
+.fg .pt[data-k=T] .o{stroke-width:23}
+.fg .pt[data-k=T] .f{stroke-width:18}
+.fg .hd .o{fill:#0e2d31;stroke:none}
+.fg .hd .f{fill:var(--ink);stroke:none}
+.fg .fl{stroke:#2c5d64;stroke-width:4;stroke-linecap:round}
+.fg .mh{opacity:.32}
 .week{display:grid;gap:8px}
 .wrow{display:grid;grid-template-columns:5.5em minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--panel);border-radius:14px;padding:12px 14px;border:0;text-align:left;width:100%}
 .wrow.today{outline:2px solid var(--mint)}
@@ -137,6 +150,7 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
   <nav role="tablist">
     <button class="tab" role="tab" data-v="today" aria-selected="true">Hari ini</button>
     <button class="tab" role="tab" data-v="week" aria-selected="false">Minggu ini</button>
+    <button class="tab" role="tab" data-v="move" aria-selected="false">Gerakan</button>
     <button class="tab" role="tab" data-v="hist" aria-selected="false">Riwayat</button>
     <button class="tab" role="tab" data-v="guide" aria-selected="false">Panduan</button>
   </nav>
@@ -144,6 +158,7 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
   <main>
     <div id="v-today"></div>
     <div id="v-week" hidden></div>
+    <div id="v-move" hidden></div>
     <div id="v-hist" hidden></div>
     <div id="v-guide" hidden>
       <div class="guide">
@@ -165,6 +180,7 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
         </ul></section>
         <section><h3>Program mingguan</h3><ul>
           <li><b>Senin</b> Kekuatan · <b>Selasa</b> Kecepatan · <b>Rabu</b> Daya tahan · <b>Kamis</b> Kontrol · <b>Jumat</b> Power · <b>Sabtu</b> Kombinasi · <b>Minggu</b> Pemulihan.</li>
+          <li><b>Tanpa alat.</b> Cukup lantai rata dan ruang sekitar 2 meter. Alas tipis (handuk atau matras) membuat lebih nyaman.</li>
           <li>Gerakan adduktor, hip flexor dan peregangan bergiliran tiap hari, jadi susunan sesi tidak pernah sama dengan kemarin.</li>
           <li><b>Tahap</b> naik otomatis tiap 6 sesi selesai (maks. tahap 3): tahanan dan rep bertambah. Kalau tahap 3 terasa mudah, naikkan level.</li>
         </ul></section>
@@ -176,7 +192,7 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
         <section><h3>Kapan berhenti &amp; ke dokter</h3><ul>
           <li>Nyeri panggul, nyeri saat ejakulasi atau sulit buang air bisa tanda otot <b>terlalu tegang</b>. Fokus ke reverse kegel dan hari Pemulihan, lalu periksa ke dokter atau fisioterapis dasar panggul.</li>
           <li>Masalah ereksi bisa jadi tanda awal gangguan jantung, pembuluh darah atau diabetes. Latihan ini pendukung, bukan pengganti periksa ke dokter.</li>
-          <li>Baru operasi prostat/hernia atau cedera pangkal paha: tanya dokter dulu. Copenhagen plank dan cossack squat berat untuk pangkal paha, mulai dari versi paling ringan.</li>
+          <li>Baru operasi prostat/hernia atau cedera pangkal paha: tanya dokter dulu. Lateral lunge dan cossack squat berat untuk pangkal paha, mulai dari versi paling ringan.</li>
         </ul></section>
       </div>
       <p class="fine">Informasi umum, bukan pengganti saran medis. Data latihan hanya tersimpan di browser HP ini.</p>
@@ -209,17 +225,7 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
           <path id="sling" class="sling" d="M94 222 Q160 268 222 228" fill="none" stroke="#3fa894" stroke-width="22" stroke-linecap="round"/>
           <path id="sling2" class="sling" d="M94 222 Q160 268 222 228" fill="none" stroke="#0f3236" stroke-width="22" stroke-dasharray="1.6 13" opacity=".45"/>
         </g>
-        <g id="gLimb" style="display:none" stroke-linecap="round" stroke-linejoin="round" fill="none">
-          <line x1="40" y1="252" x2="260" y2="252" stroke="#2c5d64" stroke-width="4"/>
-          <rect id="bench" x="214" y="196" width="50" height="56" rx="6" fill="#2c5d64" stroke="none"/>
-          <path id="pBody" stroke="#efe4cc" stroke-width="13"/>
-          <path id="pMove" stroke="#f2c84b" stroke-width="13"/>
-          <circle id="head" r="15" fill="#efe4cc" stroke="none"/>
-        </g>
-        <g id="gBreath" style="display:none">
-          <circle id="br1" cx="150" cy="150" r="60" fill="#5fd3b6" opacity=".18"/>
-          <circle id="br2" cx="150" cy="150" r="40" fill="#5fd3b6" opacity=".55"/>
-        </g>
+        <g id="gFig" class="fg" style="display:none"></g>
       </svg>
       <div class="meter" id="meter"><span class="up">ATAS</span><div class="tr"></div><span style="bottom:100%">3</span><span style="bottom:75%">2</span><span style="bottom:50%">1</span><div class="kn" id="knob"></div></div>
     </div>
@@ -267,40 +273,127 @@ const TH={
 const P0=(L,p,rec)=>({L,p,rec,hold:Math.min(10,[0,5,8,10][L]+p),reps:[0,8,10,12][L]+p,sets:rec?1:[0,1,2,3][L],quick:[0,10,15,20][L]+p*2,sub:[0,15,20,30][L]+p*5-(rec?5:0),st:[0,30,40,45][L],rm:[0,1.5,1,1][L]});
 const at=(a,P)=>a[P.L];
 const EX={
-pf_hold:{n:'Tahan Kuat',b:'pf',k:'kegel',f:'pelvis',d:'Kontraksi maksimal lalu tahan. Seperti menahan kencing dan buang angin sekaligus.',how:['Berbaring, lutut ditekuk, napas santai.','Angkat dasar panggul ke atas-dalam sekuat mungkin.','Tahan sambil tetap bernapas, lalu lepaskan penuh.'],rx:P=>({sets:P.sets,reps:P.reps,hold:P.hold,rest:Math.ceil(P.hold*P.rm)})},
-pf_stand:{n:'Kegel Berdiri',b:'pf',k:'kegel',f:'pelvis',d:'Tahan kuat dalam posisi berdiri, melawan gravitasi seperti kondisi sehari-hari.',how:['Berdiri, kaki selebar pinggul, lutut tidak dikunci.','Kencangkan dasar panggul tanpa meremas pantat.','Tahan, lalu lepas pelan.'],rx:P=>({sets:Math.max(1,P.sets-1),reps:P.reps,hold:Math.max(5,P.hold-2),rest:Math.ceil(Math.max(5,P.hold-2)*P.rm)})},
-pf_quick:{n:'Kedipan Cepat',b:'pf',k:'quick',f:'pelvis',d:'Kencang-lepas secepat mungkin. Melatih serat otot cepat untuk refleks.',how:['Kencangkan sekuat dan secepat mungkin.','Langsung lepas penuh.','Jaga ritme, jangan sampai otot setengah tegang terus.'],rx:P=>({sets:P.sets,reps:P.quick,on:1,off:P.L==1?1.5:1})},
-pf_elev:{n:'Lift 3 Lantai',b:'pf',k:'elev',f:'pelvis',d:'Naikkan kontraksi bertahap 30%, 60%, 100%, lalu turunkan bertahap.',how:['Lantai 1: kencangkan sedikit.','Lantai 2: tambah, lantai 3: penuh dan tahan.','Turunkan lantai demi lantai, jangan langsung jatuh.'],rx:P=>({sets:Math.max(1,P.sets-1),reps:at([0,5,6,8],P)+P.p,hold:Math.min(6,3+P.L),rest:6})},
-pf_sub:{n:'Tahan Panjang 50%',b:'pf',k:'sub',f:'pelvis',d:'Kontraksi setengah tenaga yang ditahan lama. Melatih stamina dasar panggul.',how:['Kencangkan sekitar setengah tenaga.','Tahan stabil, napas tetap normal.','Kalau mulai bergetar, lepas lebih awal.'],rx:P=>({sets:1,reps:P.rec?3:at([0,3,4,5],P),hold:P.sub,rest:10})},
-pf_pyr:{n:'Piramida',b:'pf',k:'pyr',f:'pelvis',d:'Durasi tahan naik lalu turun. Kekuatan dan daya tahan dalam satu rangkaian.',how:['Tiap rep: kencang penuh, tahan sesuai hitungan.','Istirahat sama panjang dengan tahanannya.','Fokus kualitas di puncak piramida.'],rx:P=>({sets:P.L==3?2:1,holds:[null,[3,5,7,5,3],[3,5,7,9,7,5,3],[4,6,8,10,8,6,4]][P.L]})},
-pf_combo:{n:'Tahan + Kedip',b:'pf',k:'combo',f:'pelvis',d:'Tahan kuat, lalu 3 kedipan ekstra di puncak. Melatih kunci ulang saat sudah lelah.',how:['Kencangkan penuh dan tahan.','Di akhir: kendurkan sedikit, kunci lagi, 3 kali.','Lepas penuh lalu istirahat.'],rx:P=>({sets:Math.max(1,P.sets-1),reps:Math.max(5,P.reps-3),hold:Math.max(4,P.hold-2),rest:Math.ceil(Math.max(4,P.hold-2)*P.rm)})},
-pf_relax:{n:'Reverse Kegel',b:'pf',k:'relax',f:'pelvis',d:'Kebalikan kegel: biarkan dasar panggul turun dan melebar saat tarik napas. Penting untuk kontrol dan mencegah otot terlalu tegang.',how:['Tarik napas ke perut, rasakan area perineum turun dan mengembang.','Tidak mengejan, cukup dibiarkan rileks.','Buang napas, otot kembali netral sendiri.'],rx:P=>({reps:P.rec?10:6})},
-pf_breath:{n:'Napas Diafragma',b:'pf',k:'relax',f:'pelvis',d:'Napas dalam yang menyelaraskan diafragma dan dasar panggul.',how:['Satu tangan di dada, satu di perut.','Tarik napas: perut naik, dada diam.','Buang napas pelan lewat mulut.'],rx:P=>({reps:8})},
-ad_squeeze:{n:'Jepit Bantal',b:'ad',k:'iso',f:'adduct',d:'Berbaring, lutut ditekuk, bantal atau bola di antara lutut. Jepit kuat.',how:['Berbaring, lutut ditekuk, bantal di antara lutut.','Jepit sekuat mungkin, napas tetap jalan.','Lepas pelan.'],rx:P=>({sets:P.sets,reps:P.reps,hold:P.hold,rest:5})},
-ad_side:{n:'Angkat Kaki Dalam',b:'ad',k:'tempo',side:1,f:'adduct',d:'Tidur miring, kaki atas ditekuk ke depan, angkat kaki bawah yang lurus.',how:['Tidur miring, kaki atas menyilang ke depan.','Angkat kaki bawah lurus setinggi mungkin.','Turunkan pelan tanpa menyentuh lantai.'],rx:P=>({sets:P.sets,reps:at([0,8,12,15],P)+P.p,tempo:[['Angkat',2,0,3,'Angkat kaki bawah'],['Tahan',1,3,3,'Rasakan paha dalam'],['Turun',3,3,0,'Turunkan pelan']]})},
-ad_sumo:{n:'Sumo Squat',b:'ad',k:'tempo',f:'squat',d:'Kaki lebar, ujung kaki menghadap keluar. Turun pelan, dorong naik dari paha dalam.',how:['Kaki lebih lebar dari bahu, jari kaki serong keluar.','Turun pelan, lutut searah jari kaki.','Naik sambil meremas paha dalam.'],rx:P=>({sets:P.sets,reps:at([0,10,12,15],P)+P.p,tempo:[['Turun',3,0,3,'Punggung tegak'],['Tahan',1,3,3,'Lutut terbuka'],['Naik',2,3,0,'Remas paha dalam']]})},
-ad_cphk:{n:'Copenhagen Plank (Lutut)',b:'ad',k:'iso',side:1,f:'plank',d:'Side plank dengan lutut atas di kursi/sofa. Versi aman untuk paha dalam.',how:['Side plank bertumpu siku.','Lutut kaki atas di kursi, kaki bawah ikut terangkat bila bisa.','Angkat pinggul lurus, tahan.'],rx:P=>({sets:1,reps:at([0,2,3,3],P),hold:at([0,10,15,20],P)+P.p*2,rest:10})},
-ad_cph:{n:'Copenhagen Plank',b:'ad',k:'iso',side:1,min:3,f:'plank',d:'Versi kaki lurus: pergelangan kaki atas di bangku. Sangat berat untuk paha dalam.',how:['Side plank bertumpu siku.','Pergelangan kaki atas di bangku.','Angkat pinggul lurus, tahan.'],rx:P=>({sets:1,reps:3,hold:20+P.p*3,rest:12})},
-ad_lateral:{n:'Lateral Lunge',b:'ad',k:'tempo',side:1,min:2,f:'squat',d:'Langkah lebar ke samping, duduk di satu kaki, kaki lain lurus.',how:['Berdiri, langkah lebar ke samping.','Tekuk lutut kaki yang melangkah, kaki lain lurus.','Dorong kembali ke tengah.'],rx:P=>({sets:P.sets,reps:at([0,6,8,10],P)+P.p,tempo:[['Turun ke samping',3,0,3,'Pinggul ke belakang'],['Tahan',1,3,3,'Rasakan tarikan paha dalam'],['Dorong balik',2,3,0,'Kembali ke tengah']]})},
-ad_cossack:{n:'Cossack Squat',b:'ad',k:'tempo',side:1,min:3,f:'squat',d:'Lateral lunge sedalam mungkin, jari kaki yang lurus menghadap atas.',how:['Kaki sangat lebar.','Turun ke satu sisi sedalam mungkin.','Kaki lurus, jari menghadap atas.'],rx:P=>({sets:2,reps:6+P.p,tempo:[['Turun ke samping',3,0,3,'Sedalam yang nyaman'],['Tahan',2,3,3,'Dada tegak'],['Naik',2,3,0,'Kembali ke tengah']]})},
-ad_bridge:{n:'Bridge + Jepit Bantal',b:'ad',k:'tempo',f:'bridge',d:'Glute bridge sambil menjepit bantal. Paha dalam, bokong dan dasar panggul bekerja bareng.',how:['Berbaring, lutut ditekuk, bantal di antara lutut.','Angkat pinggul sambil menjepit bantal dan kencangkan dasar panggul.','Turunkan ruas demi ruas.'],rx:P=>({sets:P.sets,reps:P.reps,tempo:[['Angkat + jepit',2,0,3,'Pinggul naik, bantal dijepit'],['Tahan',P.hold>6?3:2,3,3,'Kencangkan juga dasar panggul'],['Turun',3,3,0,'Turun pelan']]})},
-hf_march:{n:'Angkat Lutut Berdiri',b:'hf',k:'tempo',side:1,f:'lift',d:'Angkat lutut setinggi pinggul dan tahan. Badan tetap tegak.',how:['Berdiri tegak, boleh pegangan dinding.','Angkat lutut setinggi pinggul atau lebih.','Tahan, turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Angkat lutut',1.5,0,3,'Setinggi pinggul'],['Tahan',at([0,2,3,4],P),3,3,'Badan tegak'],['Turun',2,3,0,'Pelan']]})},
-hf_slr:{n:'Angkat Kaki Lurus',b:'hf',k:'tempo',side:1,f:'lift',d:'Berbaring, satu lutut ditekuk, angkat kaki satunya yang lurus.',how:['Berbaring, satu kaki ditekuk.','Kaki lain lurus, angkat setinggi lutut kaki yang ditekuk.','Turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Angkat',2,0,2.4,'Kaki tetap lurus'],['Tahan',2,2.4,2.4,'Perut dikencangkan'],['Turun',3,2.4,0,'Pelan']]})},
-hf_deadbug:{n:'Dead Bug',b:'hf',k:'tempo',side:1,f:'lift',d:'Telentang, lutut 90°. Ulurkan satu kaki pelan lalu tarik kembali.',how:['Telentang, lutut dan pinggul 90°, tangan ke atas.','Ulurkan satu kaki sampai hampir lantai.','Punggung bawah tetap menempel lantai.'],rx:P=>({sets:P.sets,reps:at([0,6,8,10],P)+P.p,tempo:[['Ulurkan',3,3,0.5,'Punggung bawah menempel'],['Tahan',1,0.5,0.5,'Kaki melayang'],['Tarik kembali',2,0.5,3,'Hip flexor bekerja']]})},
-hf_seated:{n:'Angkat Lutut Duduk',b:'hf',k:'tempo',f:'lift',d:'Duduk di ujung kursi, condong sedikit ke belakang, angkat kedua lutut.',how:['Duduk di ujung kursi, tangan pegang sisi kursi.','Condong sedikit ke belakang.','Angkat kedua lutut ke dada, turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Angkat kedua lutut',1.5,0,3,'Ke arah dada'],['Tahan',2,3,3,'Perut kencang'],['Turun',2.5,3,0,'Kaki tidak menyentuh lantai']]})},
-hf_rev:{n:'Reverse Crunch',b:'hf',k:'tempo',f:'lift',d:'Telentang, tarik lutut ke dada sampai pinggul sedikit terangkat.',how:['Telentang, lutut ditekuk 90°.','Tarik lutut ke dada, pinggul sedikit naik.','Turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Tarik lutut ke dada',2,0,3,'Pinggul sedikit naik'],['Tahan',1,3,3,'Buang napas'],['Turun pelan',3,3,0,'Kontrol']]})},
-hf_iso:{n:'Tahan Lutut 90°',b:'hf',k:'iso',side:1,min:2,f:'lift',d:'Berdiri dengan satu lutut di atas pinggul dan tahan tanpa bantuan tangan.',how:['Berdiri tegak.','Angkat lutut di atas tinggi pinggul.','Tahan, badan jangan condong ke belakang.'],rx:P=>({sets:1,reps:3,hold:at([0,10,15,20],P)+P.p*2,rest:8})},
-hf_mtn:{n:'Mountain Climber Lambat',b:'hf',k:'tempo',side:1,min:2,f:'lift',d:'Posisi push-up, tarik lutut ke dada pelan dan terkontrol.',how:['Posisi push-up, badan lurus.','Tarik satu lutut ke dada, tahan.','Kembali, ganti kaki setelah set selesai.'],rx:P=>({sets:P.sets,reps:8+P.p,tempo:[['Tarik lutut',1.5,0,3,'Pinggul tetap rendah'],['Tahan',1,3,3,'Perut kencang'],['Kembali',1.5,3,0,'Pelan']]})},
-hf_hang:{n:'Hanging Knee Raise',b:'hf',k:'tempo',min:3,f:'lift',d:'Bergantung di palang, angkat lutut ke dada. Tanpa palang: ganti Angkat Lutut Duduk.',how:['Bergantung di palang, bahu aktif.','Angkat lutut ke dada tanpa mengayun.','Turunkan 3 detik.'],rx:P=>({sets:P.sets,reps:8+P.p,tempo:[['Angkat lutut',1.5,0,3,'Tanpa ayunan'],['Tahan',2,3,3,'Lutut di dada'],['Turun',3,3,0,'Kontrol']]})},
-cd_hf:{n:'Peregangan Hip Flexor',b:'cd',k:'stretch',side:1,f:'breath',d:'Berlutut satu kaki, dorong pinggul ke depan, kencangkan pantat.',how:['Berlutut satu kaki, kaki lain di depan.','Kencangkan pantat, dorong pinggul ke depan.','Rasakan tarikan di depan paha atas.'],rx:P=>({hold:P.st})},
-cd_butter:{n:'Butterfly Stretch',b:'cd',k:'stretch',f:'breath',d:'Duduk, telapak kaki saling menempel, biarkan lutut turun.',how:['Duduk, telapak kaki menempel.','Tarik tumit mendekat.','Condong sedikit ke depan, napas panjang.'],rx:P=>({hold:P.st+15})},
-cd_child:{n:"Child's Pose + Napas Panggul",b:'cd',k:'stretch',f:'breath',d:'Lutut lebar, badan rebah ke depan. Napas ke arah panggul.',how:['Berlutut, lutut lebar, duduk di tumit.','Rebahkan badan ke depan, tangan lurus.','Tarik napas, rasakan dasar panggul mengembang.'],rx:P=>({hold:45})},
-cd_happy:{n:'Happy Baby',b:'cd',k:'stretch',f:'breath',d:'Telentang, pegang telapak kaki, tarik lutut ke samping ketiak.',how:['Telentang, tekuk lutut ke dada.','Pegang telapak kaki bagian dalam.','Tarik lutut ke samping, punggung tetap di lantai.'],rx:P=>({hold:P.st+10})},
-cd_9090:{n:'Peregangan 90/90',b:'cd',k:'stretch',side:1,f:'breath',d:'Duduk dengan kedua lutut 90°, satu di depan satu di samping.',how:['Duduk, kaki depan dan belakang sama-sama 90°.','Dada tegak, condong ke kaki depan.','Napas panjang.'],rx:P=>({hold:P.st})},
-cd_frog:{n:'Frog Stretch',b:'cd',k:'stretch',min:2,f:'breath',d:'Merangkak, buka lutut lebar ke samping, dorong pinggul ke belakang.',how:['Posisi merangkak, lutut dibuka lebar.','Telapak kaki menghadap keluar.','Dorong pinggul pelan ke belakang.'],rx:P=>({hold:P.st})},
-cd_couch:{n:'Couch Stretch',b:'cd',k:'stretch',side:1,min:3,f:'breath',d:'Versi berat peregangan hip flexor dengan punggung kaki di sofa/dinding.',how:['Lutut belakang di dekat dinding/sofa, punggung kaki menempel.','Kaki depan menapak.','Tegakkan badan pelan, kencangkan pantat.'],rx:P=>({hold:P.st})}
+pf_hold:{n:'Tahan Kuat',b:'pf',k:'kegel',d:'Kontraksi maksimal lalu tahan. Seperti menahan kencing dan buang angin sekaligus.',how:['Berbaring, lutut ditekuk, napas santai.','Angkat dasar panggul ke atas-dalam sekuat mungkin.','Tahan sambil tetap bernapas, lalu lepaskan penuh.'],rx:P=>({sets:P.sets,reps:P.reps,hold:P.hold,rest:Math.ceil(P.hold*P.rm)})},
+pf_stand:{n:'Kegel Berdiri',b:'pf',k:'kegel',d:'Tahan kuat dalam posisi berdiri, melawan gravitasi seperti kondisi sehari-hari.',how:['Berdiri, kaki selebar pinggul, lutut tidak dikunci.','Kencangkan dasar panggul tanpa meremas pantat.','Tahan, lalu lepas pelan.'],rx:P=>({sets:Math.max(1,P.sets-1),reps:P.reps,hold:Math.max(5,P.hold-2),rest:Math.ceil(Math.max(5,P.hold-2)*P.rm)})},
+pf_quick:{n:'Kedipan Cepat',b:'pf',k:'quick',d:'Kencang-lepas secepat mungkin. Melatih serat otot cepat untuk refleks.',how:['Kencangkan sekuat dan secepat mungkin.','Langsung lepas penuh.','Jaga ritme, jangan sampai otot setengah tegang terus.'],rx:P=>({sets:P.sets,reps:P.quick,on:1,off:P.L==1?1.5:1})},
+pf_elev:{n:'Lift 3 Lantai',b:'pf',k:'elev',d:'Naikkan kontraksi bertahap 30%, 60%, 100%, lalu turunkan bertahap.',how:['Lantai 1: kencangkan sedikit.','Lantai 2: tambah, lantai 3: penuh dan tahan.','Turunkan lantai demi lantai, jangan langsung jatuh.'],rx:P=>({sets:Math.max(1,P.sets-1),reps:at([0,5,6,8],P)+P.p,hold:Math.min(6,3+P.L),rest:6})},
+pf_sub:{n:'Tahan Panjang 50%',b:'pf',k:'sub',d:'Kontraksi setengah tenaga yang ditahan lama. Melatih stamina dasar panggul.',how:['Kencangkan sekitar setengah tenaga.','Tahan stabil, napas tetap normal.','Kalau mulai bergetar, lepas lebih awal.'],rx:P=>({sets:1,reps:P.rec?3:at([0,3,4,5],P),hold:P.sub,rest:10})},
+pf_pyr:{n:'Piramida',b:'pf',k:'pyr',d:'Durasi tahan naik lalu turun. Kekuatan dan daya tahan dalam satu rangkaian.',how:['Tiap rep: kencang penuh, tahan sesuai hitungan.','Istirahat sama panjang dengan tahanannya.','Fokus kualitas di puncak piramida.'],rx:P=>({sets:P.L==3?2:1,holds:[null,[3,5,7,5,3],[3,5,7,9,7,5,3],[4,6,8,10,8,6,4]][P.L]})},
+pf_combo:{n:'Tahan + Kedip',b:'pf',k:'combo',d:'Tahan kuat, lalu 3 kedipan ekstra di puncak. Melatih kunci ulang saat sudah lelah.',how:['Kencangkan penuh dan tahan.','Di akhir: kendurkan sedikit, kunci lagi, 3 kali.','Lepas penuh lalu istirahat.'],rx:P=>({sets:Math.max(1,P.sets-1),reps:Math.max(5,P.reps-3),hold:Math.max(4,P.hold-2),rest:Math.ceil(Math.max(4,P.hold-2)*P.rm)})},
+pf_relax:{n:'Reverse Kegel',b:'pf',k:'relax',d:'Kebalikan kegel: biarkan dasar panggul turun dan melebar saat tarik napas. Penting untuk kontrol dan mencegah otot terlalu tegang.',how:['Tarik napas ke perut, rasakan area perineum turun dan mengembang.','Tidak mengejan, cukup dibiarkan rileks.','Buang napas, otot kembali netral sendiri.'],rx:P=>({reps:P.rec?10:6})},
+pf_breath:{n:'Napas Diafragma',b:'pf',k:'relax',d:'Napas dalam yang menyelaraskan diafragma dan dasar panggul.',how:['Satu tangan di dada, satu di perut.','Tarik napas: perut naik, dada diam.','Buang napas pelan lewat mulut.'],rx:P=>({reps:8})},
+ad_squeeze:{n:'Jepit Lutut',b:'ad',k:'iso',d:'Berbaring, lutut ditekuk. Rapatkan dan tekan kedua lutut satu sama lain sekuat mungkin.',how:['Berbaring telentang, lutut ditekuk, telapak kaki menapak.','Rapatkan kedua lutut dan tekan sekuat mungkin, seolah menjepit sesuatu.','Napas tetap jalan, lalu lepas pelan.'],rx:P=>({sets:P.sets,reps:P.reps,hold:P.hold,rest:5})},
+ad_side:{n:'Angkat Kaki Dalam',b:'ad',k:'tempo',side:1,d:'Tidur miring, kaki atas ditekuk ke depan, angkat kaki bawah yang lurus.',how:['Tidur miring, kaki atas menyilang ke depan.','Angkat kaki bawah lurus setinggi mungkin.','Turunkan pelan tanpa menyentuh lantai.'],rx:P=>({sets:P.sets,reps:at([0,8,12,15],P)+P.p,tempo:[['Angkat',2,0,3,'Angkat kaki bawah'],['Tahan',1,3,3,'Rasakan paha dalam'],['Turun',3,3,0,'Turunkan pelan']]})},
+ad_sumo:{n:'Sumo Squat',b:'ad',k:'tempo',d:'Kaki lebar, ujung kaki menghadap keluar. Turun pelan, dorong naik dari paha dalam.',how:['Kaki lebih lebar dari bahu, jari kaki serong keluar.','Turun pelan, lutut searah jari kaki.','Naik sambil meremas paha dalam.'],rx:P=>({sets:P.sets,reps:at([0,10,12,15],P)+P.p,tempo:[['Turun',3,0,3,'Punggung tegak'],['Tahan',1,3,3,'Lutut terbuka'],['Naik',2,3,0,'Remas paha dalam']]})},
+ad_bridge:{n:'Bridge + Rapatkan Lutut',b:'ad',k:'tempo',d:'Glute bridge sambil merapatkan lutut. Paha dalam, bokong dan dasar panggul bekerja bareng.',how:['Berbaring, lutut ditekuk, kaki selebar pinggul.','Angkat pinggul sambil merapatkan lutut dan kencangkan dasar panggul.','Turunkan ruas demi ruas.'],rx:P=>({sets:P.sets,reps:P.reps,tempo:[['Angkat + rapatkan',2,0,3,'Pinggul naik, lutut dirapatkan'],['Tahan',P.hold>6?3:2,3,3,'Kencangkan juga dasar panggul'],['Turun',3,3,0,'Turun pelan']]})},
+ad_cross:{n:'Silang Kaki Berdiri',b:'ad',k:'tempo',side:1,d:'Berdiri di satu kaki, ayunkan kaki satunya menyilang di depan lalu buka lagi.',how:['Berdiri tegak di satu kaki, tangan di pinggang.','Ayunkan kaki satunya menyilang di depan kaki tumpu.','Kembalikan pelan ke samping, rasakan paha dalam.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Silang ke dalam',2,0,3,'Paha dalam mengencang'],['Tahan',1,3,3,'Badan tegak'],['Buka ke luar',2,3,0,'Pelan']]})},
+ad_lateral:{n:'Lateral Lunge',b:'ad',k:'tempo',side:1,min:2,d:'Langkah lebar ke samping, duduk di satu kaki, kaki lain lurus.',how:['Berdiri, langkah lebar ke samping.','Tekuk lutut kaki yang melangkah, kaki lain lurus.','Dorong kembali ke tengah.'],rx:P=>({sets:P.sets,reps:at([0,6,8,10],P)+P.p,tempo:[['Turun ke samping',3,0,3,'Pinggul ke belakang'],['Tahan',1,3,3,'Rasakan tarikan paha dalam'],['Dorong balik',2,3,0,'Kembali ke tengah']]})},
+ad_cossack:{n:'Cossack Squat',b:'ad',k:'tempo',side:1,min:3,d:'Lateral lunge sedalam mungkin, jari kaki yang lurus menghadap atas.',how:['Kaki sangat lebar.','Turun ke satu sisi sedalam mungkin.','Kaki lurus, jari menghadap atas.'],rx:P=>({sets:2,reps:6+P.p,tempo:[['Turun ke samping',3,0,3,'Sedalam yang nyaman'],['Tahan',2,3,3,'Dada tegak'],['Naik',2,3,0,'Kembali ke tengah']]})},
+ad_sumohold:{n:'Sumo Squat Tahan',b:'ad',k:'iso',min:3,d:'Turun ke posisi sumo squat dan tahan di bawah.',how:['Kaki lebar, jari kaki serong keluar.','Turun sampai paha hampir sejajar lantai.','Tahan sambil mendorong lutut ke luar.'],rx:P=>({sets:2,reps:3,hold:at([0,10,15,20],P)+P.p*2,rest:10})},
+hf_march:{n:'Angkat Lutut Berdiri',b:'hf',k:'tempo',side:1,d:'Angkat lutut setinggi pinggul dan tahan. Badan tetap tegak.',how:['Berdiri tegak, pandangan ke depan.','Angkat lutut setinggi pinggul atau lebih.','Tahan, turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Angkat lutut',1.5,0,3,'Setinggi pinggul'],['Tahan',at([0,2,3,4],P),3,3,'Badan tegak'],['Turun',2,3,0,'Pelan']]})},
+hf_slr:{n:'Angkat Kaki Lurus',b:'hf',k:'tempo',side:1,d:'Berbaring, satu lutut ditekuk, angkat kaki satunya yang lurus.',how:['Berbaring, satu kaki ditekuk.','Kaki lain lurus, angkat setinggi lutut kaki yang ditekuk.','Turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Angkat',2,0,2.4,'Kaki tetap lurus'],['Tahan',2,2.4,2.4,'Perut dikencangkan'],['Turun',3,2.4,0,'Pelan']]})},
+hf_deadbug:{n:'Dead Bug',b:'hf',k:'tempo',side:1,d:'Telentang, lutut 90°. Ulurkan satu kaki pelan lalu tarik kembali.',how:['Telentang, lutut dan pinggul 90°, tangan ke atas.','Ulurkan satu kaki sampai hampir lantai.','Punggung bawah tetap menempel lantai.'],rx:P=>({sets:P.sets,reps:at([0,6,8,10],P)+P.p,tempo:[['Ulurkan',3,3,0.5,'Punggung bawah menempel'],['Tahan',1,0.5,0.5,'Kaki melayang'],['Tarik kembali',2,0.5,3,'Hip flexor bekerja']]})},
+hf_tuck:{n:'Tarik Lutut Duduk',b:'hf',k:'tempo',d:'Duduk di lantai, bersandar ke belakang pada tangan, tarik kedua lutut ke dada.',how:['Duduk di lantai, tangan menumpu di belakang, kaki lurus.','Tarik kedua lutut ke dada, badan sedikit condong ke belakang.','Luruskan lagi pelan tanpa kaki menyentuh lantai.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Tarik lutut',1.5,0,3,'Ke arah dada'],['Tahan',2,3,3,'Perut kencang'],['Luruskan',2.5,3,0,'Kaki melayang']]})},
+hf_rev:{n:'Reverse Crunch',b:'hf',k:'tempo',d:'Telentang, tarik lutut ke dada sampai pinggul sedikit terangkat.',how:['Telentang, lutut ditekuk 90°.','Tarik lutut ke dada, pinggul sedikit naik.','Turunkan pelan.'],rx:P=>({sets:P.sets,reps:at([0,8,10,12],P)+P.p,tempo:[['Tarik lutut ke dada',2,0,3,'Pinggul sedikit naik'],['Tahan',1,3,3,'Buang napas'],['Turun pelan',3,3,0,'Kontrol']]})},
+hf_iso:{n:'Tahan Lutut 90°',b:'hf',k:'iso',side:1,min:2,d:'Berdiri dengan satu lutut di atas pinggul dan tahan tanpa bantuan tangan.',how:['Berdiri tegak.','Angkat lutut di atas tinggi pinggul.','Tahan, badan jangan condong ke belakang.'],rx:P=>({sets:1,reps:3,hold:at([0,10,15,20],P)+P.p*2,rest:8})},
+hf_mtn:{n:'Mountain Climber Lambat',b:'hf',k:'tempo',side:1,min:2,d:'Posisi push-up, tarik lutut ke dada pelan dan terkontrol.',how:['Posisi push-up, badan lurus.','Tarik satu lutut ke dada, tahan.','Kembali, ganti kaki setelah set selesai.'],rx:P=>({sets:P.sets,reps:8+P.p,tempo:[['Tarik lutut',1.5,0,3,'Pinggul tetap rendah'],['Tahan',1,3,3,'Perut kencang'],['Kembali',1.5,3,0,'Pelan']]})},
+hf_vsit:{n:'V-Sit Tahan',b:'hf',k:'iso',min:3,d:'Duduk, angkat kedua kaki lurus membentuk huruf V dan tahan. Terlalu berat? Tekuk sedikit lutut.',how:['Duduk di lantai, badan condong sedikit ke belakang.','Angkat kedua kaki sampai membentuk huruf V, tangan lurus ke depan.','Tahan, punggung tetap lurus, napas jalan.'],rx:P=>({sets:1,reps:3,hold:at([0,8,12,15],P)+P.p*2,rest:10})},
+cd_hf:{n:'Peregangan Hip Flexor',b:'cd',k:'stretch',side:1,d:'Berlutut satu kaki, dorong pinggul ke depan, kencangkan pantat.',how:['Berlutut satu kaki, kaki lain di depan.','Kencangkan pantat, dorong pinggul ke depan, tangan naik ke atas.','Rasakan tarikan di depan paha atas.'],rx:P=>({hold:P.st})},
+cd_squat:{n:'Jongkok Dalam',b:'cd',k:'stretch',d:'Jongkok dalam dengan kaki lebar, dorong lutut ke luar dengan siku. Membuka pinggul dan paha dalam.',how:['Kaki lebih lebar dari bahu, jari kaki serong keluar.','Turun sedalam yang nyaman, telapak tangan menyatu di dada.','Dorong lutut ke luar dengan siku, punggung tegak, napas panjang.'],rx:P=>({hold:P.st})},
+cd_child:{n:"Child's Pose + Napas Panggul",b:'cd',k:'stretch',d:'Lutut lebar, badan rebah ke depan. Napas ke arah panggul.',how:['Berlutut, duduk di tumit.','Rebahkan badan ke depan, tangan lurus.','Tarik napas, rasakan dasar panggul mengembang.'],rx:P=>({hold:45})},
+cd_happy:{n:'Happy Baby',b:'cd',k:'stretch',d:'Telentang, pegang tulang kering atau telapak kaki, tarik lutut ke samping ketiak.',how:['Telentang, tekuk lutut ke dada.','Pegang tulang kering atau telapak kaki bagian dalam.','Tarik lutut ke samping, punggung tetap di lantai.'],rx:P=>({hold:P.st+10})},
+cd_sidelunge:{n:'Lunge Samping Tahan',b:'cd',k:'stretch',side:1,min:2,d:'Langkah lebar ke samping, duduk di satu kaki, kaki lain lurus dan ditahan.',how:['Kaki lebar, jari kaki menghadap depan.','Duduk ke satu sisi, kaki lain lurus.','Tahan, dada tegak, napas panjang.'],rx:P=>({hold:P.st})},
+cd_lunge:{n:'Lunge Rendah',b:'cd',k:'stretch',side:1,min:3,d:'Lunge dalam dengan kaki belakang lurus, tangan ke atas. Peregangan hip flexor yang lebih dalam.',how:['Langkah panjang ke depan, kaki belakang lurus.','Turunkan pinggul, tangan naik ke atas.','Tahan sambil tegakkan badan.'],rx:P=>({hold:P.st})}
 };
-const POOL={ad:['ad_squeeze','ad_side','ad_sumo','ad_cphk','ad_bridge','ad_lateral','ad_cossack','ad_cph'],hf:['hf_march','hf_slr','hf_deadbug','hf_seated','hf_rev','hf_iso','hf_mtn','hf_hang'],cd:['cd_hf','cd_butter','cd_child','cd_happy','cd_9090','cd_frog','cd_couch']};
+Object.keys(EX).forEach(k=>EX[k].id=k);
+const POOL={ad:['ad_squeeze','ad_side','ad_sumo','ad_bridge','ad_cross','ad_lateral','ad_cossack','ad_sumohold'],hf:['hf_march','hf_slr','hf_deadbug','hf_tuck','hf_rev','hf_iso','hf_mtn','hf_vsit'],cd:['cd_hf','cd_squat','cd_child','cd_happy','cd_sidelunge','cd_lunge']};
+
+/* ---------- figur gerakan (kerangka sederhana, sudut sendi) ---------- */
+const LEN={t:70,th:50,sh:48,ua:32,fa:30,ft:11};
+const rad=a=>a*Math.PI/180,dv=a=>[Math.sin(rad(a)),Math.cos(rad(a))];
+const mvp=(p,a,l)=>{const d=dv(a);return [p[0]+d[0]*l,p[1]+d[1]*l]};
+const PD={h:[0,-7],t:180,L1:[0,0],L2:[0,0],A1:[6,10],A2:[-4,8],g:'a',fv:0};
+const PO=o=>Object.assign({},PD,o);
+function res(p){
+  const q=Object.assign({},p);q.L1=p.L1.slice();q.L2=p.L2.slice();q.A1=p.A1.slice();q.A2=p.A2.slice();
+  if(q.L2[0]==='fit'){const sg=q.L2[1],d=LEN.th*Math.cos(rad(q.L1[0]))+LEN.sh*Math.cos(rad(q.L1[1])),a=Math.acos(Math.max(-1,Math.min(1,d/(LEN.th+LEN.sh))))*180/Math.PI*sg;q.L2=[a,a]}
+  ['L1','L2'].forEach(k=>{if(q[k].length<3)q[k][2]=q[k][1]+90});
+  return q}
+const lr=(a,b,q)=>a+(b-a)*q,lra=(A,B,q)=>A.map((v,i)=>lr(v,B[i],q));
+const mix=(A,B,q)=>({h:lra(A.h,B.h,q),t:lr(A.t,B.t,q),L1:lra(A.L1,B.L1,q),L2:lra(A.L2,B.L2,q),A1:lra(A.A1,B.A1,q),A2:lra(A.A2,B.A2,q),g:A.g,fv:A.fv});
+function skel(p){
+  const bd=p=>{const h=p.h,f=p.fv,s=mvp(h,p.t,LEN.t);
+    const leg=(L,dx)=>{const hp=[h[0]+(f?dx:0),h[1]],k=mvp(hp,L[0],LEN.th),a=mvp(k,L[1],LEN.sh);return [hp,k,a,f?a:mvp(a,L[2],LEN.ft)]};
+    const arm=(A,dx)=>{const sp=[s[0]+(f?dx:0),s[1]],e=mvp(sp,A[0],LEN.ua);return [sp,e,mvp(e,A[1],LEN.fa)]};
+    return {T:[h,mvp(s,p.t,8)],hd:mvp(s,p.t,23),L1:leg(p.L1,8),L2:leg(p.L2,-8),A1:arm(p.A1,11),A2:arm(p.A2,-11)}};
+  let S=bd(p);const g=p.g||'';
+  if(g){const pts=[];if(g.includes('a'))pts.push(S.L1[2],S.L1[3],S.L2[2],S.L2[3]);if(g.includes('k'))pts.push(S.L1[1],S.L2[1]);if(g.includes('h'))pts.push(S.A1[2],S.A2[2]);if(g.includes('e'))pts.push(S.A1[1],S.A2[1]);
+    const m=Math.max(...pts.map(x=>x[1]));S=bd(Object.assign({},p,{h:[p.h[0],p.h[1]-5.5-m]}))}
+  return S}
+const MV={},mk=(A,B,hl,m)=>({A:res(A),B:res(B),hl:hl||[],mk:m||'hip'});
+const FR={fv:1,A1:[25,-120],A2:[-25,120]};
+const LIE=PO({h:[0,-7],t:-90,L1:[135,38],L2:[131,34],A1:[92,92],A2:[95,95],g:''});
+const pfl=mk(LIE,LIE);
+['pf_hold','pf_quick','pf_elev','pf_sub','pf_pyr','pf_combo','pf_relax'].forEach(k=>MV[k]=pfl);
+MV.pf_breath=mk(LIE,LIE,[],'belly');
+MV.pf_stand=mk(PO({}),PO({}));
+MV.ad_squeeze=mk(LIE,LIE,['L1','L2'],'knee');
+const SL=o=>PO({h:[0,-7],t:-90,L1:[150,25],A1:[150,60],A2:[-100,-100],g:'',...o});
+MV.ad_side=mk(SL({L2:[90,90]}),SL({L2:[130,130]}),['L2']);
+const SU=o=>PO({...FR,...o});
+MV.ad_sumo=MV.ad_sumohold=mk(SU({L1:[24,20],L2:[-24,-20]}),SU({L1:[76,-13],L2:[-76,13]}),['L1','L2']);
+MV.cd_squat=mk(SU({L1:[24,20],L2:[-24,-20]}),SU({L1:[84,-20],L2:[-84,20]}),['L1','L2']);
+MV.ad_cross=mk(PO({fv:1,L1:[30,30],L2:[-3,-3],A1:[18,12],A2:[-18,-12]}),PO({fv:1,L1:[-16,-16],L2:[-3,-3],A1:[18,12],A2:[-18,-12]}),['L1']);
+MV.ad_lateral=MV.cd_sidelunge=mk(SU({L1:[2,2],L2:[-2,-2]}),SU({L1:[68,-8],L2:['fit',-1]}),['L1','L2']);
+MV.ad_cossack=mk(SU({L1:[20,18],L2:[-20,-18]}),SU({L1:[80,-20],L2:['fit',-1]}),['L1','L2']);
+MV.ad_bridge=mk(LIE,PO({h:[-9.4,-42],t:-60,L1:[95,29],L2:[93,31],A1:[92,92],A2:[95,95],g:''}),['L1','L2'],'knee');
+MV.hf_march=MV.hf_iso=mk(PO({}),PO({L1:[96,-5],A1:[-28,-18],A2:[38,52]}),['L1']);
+const SP=o=>PO({h:[0,-7],t:-90,L2:[135,38],L1:[90,90],A1:[92,92],A2:[95,95],g:'',...o});
+MV.hf_slr=mk(SP({}),SP({L1:[132,132]}),['L1']);
+const DB=o=>PO({h:[0,-7],t:-90,L1:[180,90],L2:[182,92],A1:[180,180],A2:[182,182],g:'',...o});
+MV.hf_deadbug=mk(DB({}),DB({L1:[100,94],A2:[260,262]}),['L1','A2']);
+const SE=o=>PO({h:[0,-7],t:-160,L1:[90,90],L2:[92,92],A1:[-5,-5],A2:[-8,-8],g:'',...o});
+MV.hf_tuck=mk(SE({}),SE({t:-168,L1:[145,40],L2:[150,45]}),['L1','L2']);
+MV.hf_rev=mk(PO({h:[0,-7],t:-90,L1:[180,90],L2:[183,93],A1:[92,92],A2:[95,95],g:''}),PO({h:[-6,-20],t:-79,L1:[200,100],L2:[203,103],A1:[92,92],A2:[95,95],g:''}),['L1','L2']);
+const PL=o=>PO({h:[0,-42],t:-111,L1:[69,69],L2:[72,72],A1:[0,0],A2:[3,3],g:'ah',...o});
+MV.hf_mtn=mk(PL({}),PL({L1:[-60,95]}),['L1']);
+const VS=o=>PO({h:[0,-7],t:-150,A1:[100,100],A2:[102,102],g:'',...o});
+MV.hf_vsit=mk(VS({t:-160,L1:[145,40],L2:[150,45]}),VS({L1:[128,128],L2:[125,125]}),['L1','L2']);
+const KN=o=>PO({h:[0,-57],t:180,L1:[85,0],L2:[-8,-90,-90],A1:[8,10],A2:[0,12],g:'ak',...o});
+MV.cd_hf=mk(KN({}),KN({h:[2,-57],t:185,L1:[80,0],L2:[-22,-90,-90],A1:[170,172],A2:[165,168]}),['L2']);
+const LG=o=>PO({t:180,L1:[85,0],L2:['fit',-1],A1:[8,10],A2:[0,12],g:'a',...o});
+MV.cd_lunge=mk(LG({}),LG({L1:[100,-5],t:184,A1:[172,174],A2:[168,170]}),['L2']);
+const CH=o=>PO({h:[0,-14],t:180,L1:[64,-92,-90],L2:[66,-92,-90],A1:[5,8],A2:[2,6],g:'ak',...o});
+MV.cd_child=mk(CH({}),CH({t:88,A1:[98,100],A2:[100,102]}));
+MV.cd_happy=mk(PO({h:[0,-7],t:-90,L1:[185,150],L2:[188,152],A1:[130,170],A2:[132,172],g:''}),PO({h:[0,-7],t:-90,L1:[225,180],L2:[228,184],A1:[130,170],A2:[132,172],g:''}),['L1','L2']);
+
+function fitOf(ex){
+  if(ex._f)return ex._f;const M=MV[ex.id];let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+  [0,.5,1].forEach(q=>{const S=skel(mix(M.A,M.B,q));
+    [...S.T,...S.L1,...S.L2,...S.A1,...S.A2].forEach(p=>{x0=Math.min(x0,p[0]-7);x1=Math.max(x1,p[0]+7);y0=Math.min(y0,p[1]-7);y1=Math.max(y1,p[1]+7)});
+    x0=Math.min(x0,S.hd[0]-14);x1=Math.max(x1,S.hd[0]+14);y0=Math.min(y0,S.hd[1]-14);y1=Math.max(y1,S.hd[1]+14)});
+  y1=Math.max(y1,2);
+  const w=x1-x0,h=y1-y0,s=Math.min(1.45,230/w,205/h),cx=(x0+x1)/2,cy=(y0+y1)/2;
+  return ex._f={s,tx:150-s*cx,ty:150-s*cy,x0,x1}}
+const KS=['L2','A2','T','L1','A1'];
+const figParts=()=>'<line class="fl"/>'+KS.map(k=>`<g class="pt" data-k="${k}"><path class="o"/><path class="f"/></g>`).join('')+'<g class="hd"><circle class="o" r="15.5"/><circle class="f" r="13"/></g><circle class="mh"/><circle class="md" r="4"/>';
+function setFig(g,ex,q,pulse){
+  let c=g._c;
+  if(!c){c={pt:{}};g.querySelectorAll('.pt').forEach(e=>c.pt[e.dataset.k]=[e.children[0],e.children[1]]);const hd=g.querySelector('.hd');c.hd=[hd.children[0],hd.children[1]];c.fl=g.querySelector('.fl');c.mh=g.querySelector('.mh');c.md=g.querySelector('.md');g._c=c}
+  const M=MV[ex.id],ft=fitOf(ex),p=mix(M.A,M.B,q),S=skel(p),tf=`translate(${ft.tx.toFixed(1)} ${ft.ty.toFixed(1)}) scale(${ft.s.toFixed(3)})`;
+  if(g._tf!==tf){g.setAttribute('transform',tf);g._tf=tf;c.fl.setAttribute('x1',ft.x0-12);c.fl.setAttribute('x2',ft.x1+12);c.fl.setAttribute('y1',0);c.fl.setAttribute('y2',0)}
+  const ac=BL[ex.b].c,path=a=>'M'+a.map(x=>x[0].toFixed(1)+' '+x[1].toFixed(1)).join('L');
+  KS.forEach(k=>{const d=path(S[k]),[o,f]=c.pt[k];o.setAttribute('d',d);f.setAttribute('d',d);f.style.stroke=M.hl.includes(k)?ac:(!p.fv&&(k=='L2'||k=='A2')?'#9db8b0':'var(--ink)')});
+  c.hd.forEach(e=>{e.setAttribute('cx',S.hd[0].toFixed(1));e.setAttribute('cy',S.hd[1].toFixed(1))});
+  const m=M.mk=='knee'?S.L1[1]:M.mk=='belly'?mvp(S.T[0],p.t,28):S.T[0];
+  [c.mh,c.md].forEach(e=>{e.setAttribute('cx',m[0].toFixed(1));e.setAttribute('cy',m[1].toFixed(1));e.style.fill=ac});
+  c.mh.setAttribute('r',(9+15*Math.max(0,q)+(pulse||0)*20).toFixed(1))}
+const RM=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+const loopQ=t=>{const p=(t%4.4)/4.4;return p<.15?0:p<.5?ease((p-.15)/.35):p<.65?1:1-ease((p-.65)/.35)};
+const figSVG=(id,ph)=>`<svg class="fig" viewBox="0 0 300 300" data-ex="${id}" data-ph="${ph||0}" aria-hidden="true"><circle cx="150" cy="150" r="146" fill="#0f3236"/><g class="fg">${figParts()}</g></svg>`;
+function figTick(ts){
+  if(!run)document.querySelectorAll('svg.fig[data-ex]').forEach(s=>{if(!s.getClientRects().length)return;setFig(s.querySelector('.fg'),EX[s.dataset.ex],RM?0.9:loopQ(ts/1000+(+s.dataset.ph)))});
+  requestAnimationFrame(figTick)}
 
 const stage=()=>Math.min(3,Math.floor((S.lvCount||0)/6));
 function plan(d){
@@ -322,7 +415,7 @@ function build(ex,P){
   case 'relax':rep=ex===EX.pf_breath?[R('Tarik napas',4,0,-.6,'Perut naik, dada diam'),R('Buang napas',6,-.6,0,'Pelan lewat mulut')]:[R('Tarik napas, turunkan',4,0,-1,'Perineum turun & melebar, tanpa mengejan'),R('Buang napas, kembali',5,-1,0,'Biarkan kembali sendiri')];txt=`${reps} napas · tarik ${rep[0].d} dtk, buang ${rep[1].d} dtk`;break;
   case 'tempo':rep=r.tempo.map(x=>R(x[0],x[1],x[2],x[3],x[4]));txt=`${sets} set × ${reps} rep${sd} · tempo ${r.tempo.map(x=>x[1]).join('-')} dtk`;break;
   case 'iso':rep=[R('Tekan',1,0,3,'Masuk posisi'),R('Tahan',r.hold,3,3,'Napas tetap jalan'),R('Lepas',1,3,0,''),R('Istirahat',r.rest,0,0,'Rileks')];txt=`${sets>1?sets+' set × ':''}${reps} rep${sd} · tahan ${r.hold} dtk`;break;
-  case 'stretch':rep=[R('Tahan regangan',r.hold,0,0,'Napas panjang, rileks di tiap buangan')];rep[0].br=1;txt=`${r.hold} dtk${sd}`;break;}
+  case 'stretch':rep=[R('Tahan regangan',r.hold,0,3,'Napas panjang, rileks di tiap buangan',3)];txt=`${r.hold} dtk${sd}`;break;}
   return {txt,sets,reps,rep,seqs};
 }
 function steps(pl,from){
@@ -343,20 +436,20 @@ const mins=pl=>Math.max(1,Math.round(steps(pl,0).reduce((a,s)=>a+s.d,0)/60));
 let view=new Date();
 const today=()=>new Date();
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function heroArt(){const c=$('#art').cloneNode(true);c.removeAttribute('id');c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));c.querySelectorAll('.sling').forEach(e=>e.setAttribute('d','M94 222 Q160 212 222 228'));c.querySelectorAll('circle')[2].setAttribute('stroke-dashoffset','240');return c.outerHTML}
+function heroArt(){const c=$('#art').cloneNode(true);const gf=c.querySelector('#gFig');gf&&gf.remove();c.querySelector('#gPelvis').style.display='';c.removeAttribute('id');c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));c.querySelectorAll('.sling').forEach(e=>e.setAttribute('d','M94 222 Q160 212 222 228'));c.querySelectorAll('circle')[2].setAttribute('stroke-dashoffset','240');return c.outerHTML}
 function renderToday(){
   const pl=plan(view),isT=key(view)==key(today()),done=S.hist[key(view)],p=stage();
   let h='';
   if(!isT)h+=`<div class="notice">Melihat program ${fmt(view)}<button class="btn small" id="backT">Kembali ke hari ini</button></div>`;
   if(p==3&&S.level<3)h+=`<div class="notice">Kamu sudah konsisten di tahap 3. Siap naik ke ${LVN[S.level+1]}?<button class="btn small" id="lvUp">Naik level</button></div>`;
   h+=`<section class="hero"><div><div class="date">${fmt(view)}${done?' · <span class="ok">Selesai</span>':''}</div><h2>${pl.t.n}</h2><p>${pl.t.d}</p>
-  <div class="chips"><span class="chip">± ${mins(pl)} menit</span><span class="chip">${pl.items.length} gerakan</span><span class="chip">${LVN[S.level]} · tahap ${p+1}/4</span></div>
+  <div class="chips"><span class="chip">± ${mins(pl)} menit</span><span class="chip">${pl.items.length} gerakan</span><span class="chip">Tanpa alat</span><span class="chip">${LVN[S.level]} · tahap ${p+1}/4</span></div>
   <button class="btn go" data-start="0">${done?'Ulangi sesi':'Mulai sesi'}</button></div><div class="heroart">${heroArt()}</div></section>
   <div class="settings"><label>Level</label><div class="seg">${[1,2,3].map(l=>`<button data-lv="${l}" aria-pressed="${S.level==l}">${LVN[l]}</button>`).join('')}</div>
   <label class="tog"><input type="checkbox" id="sSnd" ${S.sound?'checked':''}> Bunyi</label><label class="tog"><input type="checkbox" id="sVo" ${S.voice?'checked':''}> Suara pemandu</label></div>`;
   ['pf','ad','hf','cd'].forEach(b=>{const its=pl.items.map((it,i)=>({...it,i})).filter(it=>it.ex.b==b);if(!its.length)return;
     h+=`<div class="block"><div class="bh"><i class="dot" style="background:${BL[b].c}"></i><h3>${BL[b].n}</h3><span>${its.length} gerakan</span></div><div class="cards">`+
-    its.map(it=>`<article class="card" style="--c:${BL[b].c}"><h4>${esc(it.ex.n)}</h4><div class="rx">${build(it.ex,pl.P).txt}</div><p>${esc(it.ex.d)}</p><details><summary>Cara melakukan</summary><ol>${it.ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></details><button class="btn ghost small" data-start="${it.i}">Mulai dari sini</button></article>`).join('')+`</div></div>`;});
+    its.map((it,ix)=>`<article class="card" style="--c:${BL[b].c}">${figSVG(it.id,ix*.7)}<div class="ct"><h4>${esc(it.ex.n)}</h4><div class="rx">${build(it.ex,pl.P).txt}</div><p>${esc(it.ex.d)}</p></div><div class="cx"><details><summary>Cara melakukan</summary><ol>${it.ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></details><button class="btn ghost small" data-start="${it.i}">Mulai dari sini</button></div></article>`).join('')+`</div></div>`;});
   $('#v-today').innerHTML=h;
 }
 function renderWeek(){
@@ -372,10 +465,19 @@ function renderHist(){
   for(let i=0;i<35;i++){const d=new Date(start);d.setDate(start.getDate()+i);const k=key(d);cal+=`<div class="${S.hist[k]?'on':''} ${k==key(t0)?'now':''}">${d>t0?'':d.getDate()}</div>`}
   $('#v-hist').innerHTML=`<div class="stats"><div class="stat"><b>${streak()}</b><span>hari beruntun</span></div><div class="stat"><b>${ks.length}</b><span>sesi selesai</span></div><div class="stat"><b>${tot}</b><span>menit total</span></div><div class="stat"><b>${stage()+1}/4</b><span>tahap ${LVN[S.level]}</span></div></div><div class="cal">${cal}</div>`+(ks.length?'':'<div class="empty">Belum ada sesi. Selesaikan sesi pertamamu hari ini, kotak kalender akan terisi hijau.</div>')+`<p><button class="btn ghost small" id="reset">Hapus semua riwayat</button></p>`;
 }
-function show(v){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.v==v));['today','week','hist','guide'].forEach(x=>$('#v-'+x).hidden=x!=v);if(v=='today')renderToday();if(v=='week')renderWeek();if(v=='hist')renderHist();window.scrollTo(0,0)}
+function renderMove(){
+  const P1=P0(S.level,stage(),false);let n=0;
+  let h='<p class="fine" style="margin:0 0 4px">Semua gerakan tanpa alat dan bisa dilakukan di mana saja, cukup lantai yang rata. Ketuk Latihan untuk mencoba satu gerakan saja.</p>';
+  ['pf','ad','hf','cd'].forEach(b=>{const ids=Object.keys(EX).filter(id=>EX[id].b===b);
+    h+=`<div class="block"><div class="bh"><i class="dot" style="background:${BL[b].c}"></i><h3>${BL[b].n}</h3><span>${ids.length} gerakan</span></div><div class="cards">`+ids.map(id=>{const ex=EX[id];
+      return `<article class="card" style="--c:${BL[b].c}">${figSVG(id,(n++)*.5)}<div class="ct"><h4>${esc(ex.n)}</h4><div class="rx">${build(ex,P1).txt}</div><p>${esc(ex.d)}</p></div><div class="cx"><ol class="stp">${ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${ex.min>1?`<span class="chip">Level ${LVN[ex.min]}+</span>`:''}<button class="btn ghost small" data-one="${id}">Latihan gerakan ini</button></div></article>`}).join('')+'</div></div>'});
+  $('#v-move').innerHTML=h}
+function startOne(id){const ex=EX[id];startSession(0,{t:{n:ex.n},P:P0(S.level,stage(),false),items:[{id,ex}]})}
+function show(v){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.v==v));['today','week','move','hist','guide'].forEach(x=>$('#v-'+x).hidden=x!=v);if(v=='today')renderToday();if(v=='move')renderMove();if(v=='week')renderWeek();if(v=='hist')renderHist();window.scrollTo(0,0)}
 document.addEventListener('click',e=>{
   const t=e.target.closest('button');if(!t)return;
   if(t.classList.contains('tab'))return show(t.dataset.v);
+  if(t.dataset.one)return startOne(t.dataset.one);
   if(t.dataset.start!=null)return startSession(+t.dataset.start);
   if(t.dataset.lv){S.level=+t.dataset.lv;S.lvCount=0;save();return renderToday()}
   if(t.dataset.day){const[y,m,d]=t.dataset.day.split('-').map(Number);view=new Date(y,m-1,d);return show('today')}
@@ -393,15 +495,15 @@ function say(t){if(!S.voice||!window.speechSynthesis)return;try{speechSynthesis.
 function pickVoice(){try{idVoice=speechSynthesis.getVoices().find(v=>/^id/i.test(v.lang))||null}catch(e){}}
 if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
 const icoPlay='<path d="M7 4l13 8-13 8z"/>',icoPause='<path d="M7 4h3v16H7zM14 4h3v16h-3z"/>';
-function startSession(from){
+function startSession(from,ov){
   try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume()}catch(e){}
-  const pl=plan(view);run={pl,st:steps(pl,from),i:0,t:0,play:true,key:key(view),tot:0,tick:-1};
+  const pl=ov||plan(view);run={pl,st:steps(pl,from||0),i:0,t:0,play:true,key:key(view),tot:0,tick:-1,one:!!ov};
   run.tot=run.st.reduce((a,s)=>a+s.d,0);
   $('#player').classList.add('open');$('#pMain').style.display='flex';$('#done').style.display='none';document.body.style.overflow='hidden';
   try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(w=>wl=w).catch(()=>{})}catch(e){}
   setTog();enter();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
 }
-function closeP(){run=null;cancelAnimationFrame(raf);$('#player').classList.remove('open');document.body.style.overflow='';try{speechSynthesis.cancel();wl&&wl.release()}catch(e){}show('today')}
+function closeP(){const back=run&&run.one?'move':'today';run=null;cancelAnimationFrame(raf);$('#player').classList.remove('open');document.body.style.overflow='';try{speechSynthesis.cancel();wl&&wl.release()}catch(e){}show(back)}
 const cur=()=>run.st[run.i];
 function enter(){
   const s=cur(),ex=run.pl.items[s.ei].ex;run.tick=-1;
@@ -410,8 +512,7 @@ function enter(){
   $('#repInfo').textContent=s.prep?build(ex,run.pl.P).txt:[s.rep?`Rep ${s.rep}/${s.reps}`:'',s.sets>1?`Set ${s.set}/${s.sets}`:'',s.side?`Sisi ${s.side.toLowerCase()}`:''].filter(Boolean).join(' · ');
   $('#cue').innerHTML=s.prep?`${esc(ex.d)}<ol>${ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:esc(s.cue);
   const nx=run.st[run.i+1];$('#next').textContent=nx?(nx.prep?'Berikutnya: '+run.pl.items[nx.ei].ex.n:'Berikutnya: '+nx.lb):'Terakhir';
-  const pel=ex.f=='pelvis';$('#gPelvis').style.display=pel?'':'none';$('#meter').style.visibility=pel?'visible':'hidden';
-  $('#gLimb').style.display=pel||ex.f=='breath'?'none':'';$('#gBreath').style.display=ex.f=='breath'?'':'none';$('#bench').style.display=ex.f=='plank'?'':'none';
+  const pfw=ex.b==='pf'&&!s.prep;$('#gPelvis').style.display=pfw?'':'none';$('#gFig').style.display=pfw?'none':'';$('#meter').style.visibility=pfw?'visible':'hidden';
   const up=s.b>s.a||(s.a>=1.5&&s.a==s.b),col=s.prep?'var(--yel)':s.lb.startsWith('Istirahat')||s.lb=='Ganti sisi'?'var(--mute)':up?bl.c:'var(--ink)';
   $('#phase').textContent=s.lb.toUpperCase();$('#phase').style.color=col;$('#ring').setAttribute('stroke',s.prep?'#f2c84b':ex.b=='pf'?'#5fd3b6':ex.b=='ad'?'#f2c84b':ex.b=='hf'?'#ff8a72':'#c9d6ff');
   if(s.prep){beep(660,160);say(ex.n)}
@@ -424,9 +525,9 @@ function step(dir){if(!run)return;const ei=cur().ei;let target;
   if(target<0)return finish();run.i=target;run.t=0;enter();}
 function finish(){
   cancelAnimationFrame(raf);const m=Math.max(1,Math.round(run.tot/60)),k=run.key;
-  if(!S.hist[k]){S.lvCount=(S.lvCount||0)+1}S.hist[k]={m};save();beep(880,200);setTimeout(()=>beep(1175,300),220);say('Sesi selesai. Kerja bagus.');
+  if(!run.one){if(!S.hist[k]){S.lvCount=(S.lvCount||0)+1}S.hist[k]={m};save()}beep(880,200);setTimeout(()=>beep(1175,300),220);say('Sesi selesai. Kerja bagus.');
   $('#pMain').style.display='none';$('#done').style.display='block';
-  $('#doneTxt').textContent=`${run.pl.t.n} · sekitar ${m} menit. Rangkaian hari beruntun: ${streak()} hari. Besok programnya berganti.`;
+  $('#doneTxt').textContent=run.one?`${run.pl.t.n} selesai. Ini latihan satu gerakan, tidak dihitung sebagai sesi harian.`:`${run.pl.t.n} · sekitar ${m} menit. Rangkaian hari beruntun: ${streak()} hari. Besok programnya berganti.`;
 }
 const ease=x=>x<.5?2*x*x:1-((-2*x+2)**2)/2;
 function loop(ts){
@@ -441,19 +542,8 @@ function draw(){
   if(s.d>=4&&ri<=3&&ri>0&&ri!=run.tick){run.tick=ri;beep(1200,40,.08)}
   $('#ring').setAttribute('stroke-dashoffset',(829.4*(1-run.t/s.d)).toFixed(1));
   const done=run.st.slice(0,run.i).reduce((a,x)=>a+x.d,0)+run.t;$('#pProg').style.width=(done/run.tot*100).toFixed(1)+'%';
-  if(ex.f=='pelvis'){const y=(268-lv*19.3).toFixed(1),d=`M94 ${222-Math.max(0,lv)*2} Q160 ${y} 222 ${228-Math.max(0,lv)*2}`;$('#sling').setAttribute('d',d);$('#sling2').setAttribute('d',d);$('#blad').setAttribute('transform',`translate(0 ${(-lv*5).toFixed(1)})`);$('#knob').style.bottom=Math.max(0,Math.min(100,(lv+1)/4*100))+'%'}
-  else if(ex.f=='breath'){const ph=.5+.5*Math.sin(run.t*2*Math.PI/7-Math.PI/2);$('#br1').setAttribute('r',(70+40*ph).toFixed(1));$('#br2').setAttribute('r',(36+30*ph).toFixed(1))}
-  else limb(ex.f,Math.max(0,lv)/3);
-}
-const P2=(x,y)=>x.toFixed(1)+' '+y.toFixed(1);
-function limb(f,q){
-  let body='',mv='',hx=150,hy=60;
-  if(f=='lift'){const th=q*1.48,kx=140+52*Math.sin(th),ky=150+52*Math.cos(th);body='M140 82 L140 150 L140 250';mv=`M140 150 L${P2(kx,ky)} L${P2(kx+(q>.5?6:0),ky+50)}`;hx=140;hy=62}
-  else if(f=='adduct'){const a=(26-q*22)*Math.PI/180;body='M150 84 L150 150 M134 150 L166 150';mv=`M134 150 L${P2(134-100*Math.sin(a),150+100*Math.cos(a))} M166 150 L${P2(166+100*Math.sin(a),150+100*Math.cos(a))}`;hy=64}
-  else if(f=='squat'){const yh=128+q*58,kx=44+q*26,ky=yh+(252-yh)*.5;body=`M150 ${yh-72} L150 ${yh}`;mv=`M150 ${yh} L${P2(150-kx,ky)} L94 252 M150 ${yh} L${P2(150+kx,ky)} L206 252`;hy=yh-92}
-  else if(f=='plank'){const hyp=230-q*30;body=`M48 252 L84 252 L84 202`;mv=`M84 202 L${P2(156,hyp)} L238 194`;hx=66;hy=186}
-  else if(f=='bridge'){const hyy=238-q*48;body='M62 244 L120 250';mv=`M62 244 L${P2(132,hyy)} L196 176 L222 250`;hx=42;hy=236}
-  $('#pBody').setAttribute('d',body);$('#pMove').setAttribute('d',mv);$('#head').setAttribute('cx',hx);$('#head').setAttribute('cy',hy);
+  if(ex.b==='pf'&&!s.prep){const y=(268-lv*19.3).toFixed(1),d=`M94 ${222-Math.max(0,lv)*2} Q160 ${y} 222 ${228-Math.max(0,lv)*2}`;$('#sling').setAttribute('d',d);$('#sling2').setAttribute('d',d);$('#blad').setAttribute('transform',`translate(0 ${(-lv*5).toFixed(1)})`);$('#knob').style.bottom=Math.max(0,Math.min(100,(lv+1)/4*100))+'%'}
+  else{const q=s.prep?loopQ(run.t):Math.max(0,Math.min(1,lv/3));setFig($('#gFig'),ex,q,ex.k==='stretch'&&!s.prep?.12*Math.sin(run.t*1.6):0)}
 }
 function setTog(){$('#pSnd').classList.toggle('off',!S.sound);$('#pVoice').classList.toggle('off',!S.voice);$('#playIco').innerHTML=run&&run.play?icoPause:icoPlay}
 $('#pPlay').onclick=()=>{if(!run)return;run.play=!run.play;try{actx&&actx.resume()}catch(e){}if(!run.play)try{speechSynthesis.cancel()}catch(e){}setTog()};
@@ -462,6 +552,7 @@ $('#pClose').onclick=closeP;$('#doneBtn').onclick=closeP;
 $('#pSnd').onclick=()=>{S.sound=!S.sound;save();setTog()};
 $('#pVoice').onclick=()=>{S.voice=!S.voice;save();if(!S.voice)try{speechSynthesis.cancel()}catch(e){}setTog()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&run&&run.play){run.play=false;setTog()}});
+$('#gFig').innerHTML=figParts();requestAnimationFrame(figTick);
 show('today');
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
 }
