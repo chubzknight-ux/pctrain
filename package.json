@@ -1,5 +1,5 @@
 {
-  "name": "latihan-inti-pria",
+  "name": "pctrain",
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
