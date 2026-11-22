@@ -1,6 +1,6 @@
 # pctrain
 
-Web app latihan harian dasar panggul (kegel), adduktor dan hip flexor dengan panduan interaktif (animasi, hitung mundur, bunyi dan suara pemandu). 49 gerakan tanpa alat. Tiap hari punya kombinasi gerakan sesuai temanya (Kekuatan, Kecepatan, Daya Tahan, Kontrol, Power, Kombinasi, Pemulihan) dalam siklus 4 minggu: Fondasi → Volume → Puncak → Ringan (deload). Beban naik otomatis tiap 6 sesi. Bisa dipasang di layar utama HP (PWA) dan jalan tanpa internet.
+Web app latihan harian dasar panggul (kegel), adduktor dan hip flexor dengan panduan interaktif (animasi, hitung mundur, bunyi dan suara pemandu). 49 gerakan tanpa alat. Tiap hari punya kombinasi gerakan sesuai temanya (Kekuatan, Kecepatan, Daya Tahan, Kontrol, Power, Kombinasi, Pemulihan) dalam siklus 4 minggu: Fondasi → Volume → Puncak → Ringan (deload). Tiap sesi maksimal 10 menit; beban naik otomatis tiap 6 sesi lewat tahanan lebih lama dan gerakan lebih berat. Bisa dipasang di layar utama HP (PWA) dan jalan tanpa internet.
 
 ## Struktur
 - `public/` semua file web (index.html, manifest, service worker, ikon)

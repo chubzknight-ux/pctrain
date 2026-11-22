@@ -194,7 +194,8 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
           <li>Tiap hari punya <b>kombinasi gerakan yang dipilih sesuai temanya</b>: hari kekuatan memakai gerakan tahan berat, hari kecepatan gerakan dinamis, hari kontrol gerakan lambat satu sisi. Hari berat (Jumat) diletakkan setelah hari kontrol yang lebih ringan.</li>
           <li><b>Siklus 4 minggu</b>: Fondasi → Volume → Puncak → Ringan (deload), lalu ulang. Tiap minggu susunan gerakannya berbeda, dan minggu Ringan memberi waktu otot pulih supaya tetap berkembang.</li>
           <li><b>Tanpa alat.</b> Cukup lantai rata dan ruang sekitar 2 meter. Alas tipis (handuk atau matras) membuat lebih nyaman.</li>
-          <li><b>Tahap</b> naik otomatis tiap 6 sesi selesai (maks. tahap 4): tahanan dan rep bertambah. Kalau tahap 4 terasa mudah, naikkan level. Level lebih tinggi membuka variasi gerakan yang lebih berat.</li>
+          <li><b>Maksimal 10 menit per sesi.</b> Kalau beban naik, jumlah set dan rep yang disesuaikan supaya tetap muat. Jadi naik tahap atau level berarti tahanan lebih lama dan gerakan lebih berat, bukan sesi lebih panjang.</li>
+          <li><b>Tahap</b> naik otomatis tiap 6 sesi selesai (maks. tahap 4). Kalau tahap 4 terasa mudah, naikkan level. Level lebih tinggi membuka variasi gerakan yang lebih berat.</li>
         </ul></section>
         <section><h3>Apa kata penelitian</h3><ul>
           <li>Dorey dkk. (2004): pria dengan disfungsi ereksi yang rutin latihan dasar panggul selama 3 bulan, sekitar 40% kembali normal dan sekitar 35% membaik.</li>
@@ -499,11 +500,11 @@ function plan(d){
   const wd=d.getDay(),c=cyc(d),t=TH[wd],L=S.level,P=P0(L,stage(),wd==0,c),W=WP[wd],items=[];
   const ok=id=>EX[id]&&(EX[id].min||1)<=L&&!items.includes(id);
   ['pf','ad','hf','cd'].forEach(b=>W[b].forEach(sl=>{const o=Array.isArray(sl)?sl[c]:sl;const id=o.split('|').find(ok)||POOL[b].find(ok);if(id)items.push(id)}));
-  return {t,P,c,items:items.map(id=>({id,ex:EX[id]}))};
+  return fit({t,P,c,items:items.map(id=>({id,ex:EX[id],o:{}}))});
 }
 const R=(lb,d,a,b,cue,r)=>({lb,d,a,b,cue:cue||'',r:r||d});
-function build(ex,P){
-  const r=ex.rx(P);let rep,txt,sets=r.sets||1,reps=r.reps||1;const sd=ex.side?' / sisi':'';let seqs=null;
+function build(ex,P,o){
+  const r=Object.assign({},ex.rx(P),o||{});let rep,txt,sets=r.sets||1,reps=r.reps||1;const sd=ex.side?' / sisi':'';let seqs=null;
   switch(ex.k){
   case 'kegel':rep=[R('Kencangkan',1.5,0,3,'Angkat ke atas dan ke dalam'),R('Tahan',r.hold,3,3,'Napas tetap jalan, pantat rileks'),R('Lepas',2,3,0,'Lepaskan penuh'),R('Istirahat',r.rest,0,0,'Rileks total')];txt=`${sets} set × ${reps} rep · tahan ${r.hold} dtk · istirahat ${r.rest} dtk`;break;
   case 'quick':rep=[R('Kencang',r.on,0,3,'Cepat dan tajam',.3),R('Lepas',r.off,3,0,'Lepas penuh',.3)];txt=`${sets} set × ${reps} kedipan cepat`;break;
@@ -519,16 +520,34 @@ function build(ex,P){
 }
 function steps(pl,from){
   const out=[];
-  pl.items.forEach((it,ei)=>{if(ei<from)return;const b=build(it.ex,pl.P),sides=it.ex.side?['Kiri','Kanan']:[''];
-    out.push({lb:'Siap-siap',d:pl.P.L==1?9:7,a:0,b:0,r:1,prep:1,ei,cue:''});
+  pl.items.forEach((it,ei)=>{if(ei<from)return;const b=build(it.ex,pl.P,it.o),sides=it.ex.side?['Kiri','Kanan']:[''];
+    out.push({lb:'Siap-siap',d:pl.P.L==1?8:6,a:0,b:0,r:1,prep:1,ei,cue:''});
     for(let s=0;s<b.sets;s++){sides.forEach((sd,si)=>{
-      if(si>0)out.push({lb:'Ganti sisi',d:6,a:0,b:0,r:1,ei,cue:'Pindah ke sisi kanan',side:'Kanan',set:s+1,sets:b.sets});
+      if(si>0)out.push({lb:'Ganti sisi',d:5,a:0,b:0,r:1,ei,cue:'Pindah ke sisi kanan',side:'Kanan',set:s+1,sets:b.sets});
       for(let k=0;k<b.reps;k++){const seq=b.seqs?b.seqs[k]:b.rep;seq.forEach((st,j)=>{
         const last=k==b.reps-1&&j==seq.length-1&&st.lb=='Istirahat';if(last)return;
         out.push(Object.assign({},st,{ei,rep:k+1,reps:b.reps,set:s+1,sets:b.sets,side:sd}))})}});
-      if(s<b.sets-1)out.push({lb:'Istirahat antar set',d:it.ex.b=='pf'?20:30,a:0,b:0,r:1,ei,cue:'Goyangkan kaki, napas santai',set:s+1,sets:b.sets});}
+      if(s<b.sets-1)out.push({lb:'Istirahat antar set',d:it.ex.b=='pf'?15:20,a:0,b:0,r:1,ei,cue:'Goyangkan kaki, napas santai',set:s+1,sets:b.sets});}
   });return out;
 }
+/* batas waktu sesi: kalau lewat, kurangi set lalu rep (tahanan & variasi gerakan tetap) */
+const LIMIT=600,FLOOR={kegel:7,quick:12,elev:4,sub:3,combo:4,relax:5,tempo:6,iso:3},FL2={kegel:4,quick:8,elev:3,sub:2,combo:3,relax:4,tempo:4,iso:2},WT={pf:2.5,ad:1,hf:1,cd:1};
+const dur=(it,P)=>steps({items:[it],P},0).reduce((a,s)=>a+s.d,0);
+function trim(it,P,F){F=F||FLOOR;const ex=it.ex,o=it.o,r=Object.assign({},ex.rx(P),o);
+  if((r.sets||1)>1){o.sets=r.sets-1;return 1}
+  if(ex.k=='pyr'&&r.holds.length>3){const a=r.holds.slice(0,(r.holds.length-1)/2);o.holds=a.concat(a.slice(0,-1).reverse());return 1}
+  if(r.reps!=null&&F[ex.k]&&r.reps>F[ex.k]){o.reps=Math.max(F[ex.k],r.reps-(ex.k=='quick'?2:1));return 1}
+  if(ex.k=='stretch'&&r.hold>20){o.hold=Math.max(20,r.hold-5);return 1}
+  return 0}
+function fit(pl){
+  let d=pl.items.map(it=>dur(it,pl.P));
+  for(let g=0;g<400;g++){
+    if(d.reduce((a,x)=>a+x,0)<=LIMIT)break;
+    const w=i=>d[i]/WT[pl.items[i].ex.b],ord=d.map((x,i)=>i).sort((a,b)=>w(b)-w(a));let k=ord.find(i=>trim(pl.items[i],pl.P));
+    if(k==null){const bl=['cd','hf','ad'].find(b=>pl.items.filter(it=>it.ex.b==b).length>1);if(!bl){k=ord.find(i=>trim(pl.items[i],pl.P,FL2));if(k==null)break;d[k]=dur(pl.items[k],pl.P);continue}
+      k=pl.items.map(it=>it.ex.b).lastIndexOf(bl);pl.items.splice(k,1);d.splice(k,1);continue}
+    d[k]=dur(pl.items[k],pl.P)}
+  return pl}
 const mins=pl=>Math.max(1,Math.round(steps(pl,0).reduce((a,s)=>a+s.d,0)/60));
 
 /* ---------- views ---------- */
@@ -549,7 +568,7 @@ function renderToday(){
   <div class="why"><b>Kenapa kombinasi ini.</b> ${pl.t.w} <b>Minggu ${CW[pl.c].n}:</b> ${CW[pl.c].d}</div>`;
   ['pf','ad','hf','cd'].forEach(b=>{const its=pl.items.map((it,i)=>({...it,i})).filter(it=>it.ex.b==b);if(!its.length)return;
     h+=`<div class="block"><div class="bh"><i class="dot" style="background:${BL[b].c}"></i><h3>${BL[b].n}</h3><span>${its.length} gerakan</span></div><div class="cards">`+
-    its.map((it,ix)=>`<article class="card" style="--c:${BL[b].c}">${figSVG(it.id,ix*.7)}<div class="ct"><h4>${esc(it.ex.n)}</h4><div class="rx">${build(it.ex,pl.P).txt}</div><p>${esc(it.ex.d)}</p></div><div class="cx"><details><summary>Cara melakukan</summary><ol>${it.ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></details><button class="btn ghost small" data-start="${it.i}">Mulai dari sini</button></div></article>`).join('')+`</div></div>`;});
+    its.map((it,ix)=>`<article class="card" style="--c:${BL[b].c}">${figSVG(it.id,ix*.7)}<div class="ct"><h4>${esc(it.ex.n)}</h4><div class="rx">${build(it.ex,pl.P,it.o).txt}</div><p>${esc(it.ex.d)}</p></div><div class="cx"><details><summary>Cara melakukan</summary><ol>${it.ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></details><button class="btn ghost small" data-start="${it.i}">Mulai dari sini</button></div></article>`).join('')+`</div></div>`;});
   $('#v-today').innerHTML=h;
 }
 let wSel=null;
@@ -620,7 +639,7 @@ function enter(){
   const s=cur(),ex=run.pl.items[s.ei].ex;run.tick=-1;
   const bl=BL[ex.b];$('#pBlk').textContent=bl.n+' · gerakan '+(s.ei+1)+'/'+run.pl.items.length;$('#pBlk').style.setProperty('--c',bl.c);
   $('#exName').textContent=ex.n;
-  $('#repInfo').textContent=s.prep?build(ex,run.pl.P).txt:[s.rep?`Rep ${s.rep}/${s.reps}`:'',s.sets>1?`Set ${s.set}/${s.sets}`:'',s.side?`Sisi ${s.side.toLowerCase()}`:''].filter(Boolean).join(' · ');
+  $('#repInfo').textContent=s.prep?build(ex,run.pl.P,run.pl.items[s.ei].o).txt:[s.rep?`Rep ${s.rep}/${s.reps}`:'',s.sets>1?`Set ${s.set}/${s.sets}`:'',s.side?`Sisi ${s.side.toLowerCase()}`:''].filter(Boolean).join(' · ');
   $('#cue').innerHTML=s.prep?`${esc(ex.d)}<ol>${ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:esc(s.cue);
   const nx=run.st[run.i+1];$('#next').textContent=nx?(nx.prep?'Berikutnya: '+run.pl.items[nx.ei].ex.n:'Berikutnya: '+nx.lb):'Terakhir';
   const pfw=ex.b==='pf'&&!s.prep;$('#gPelvis').style.display=pfw?'':'none';$('#gFig').style.display=pfw?'none':'';$('#meter').style.visibility=pfw?'visible':'hidden';
