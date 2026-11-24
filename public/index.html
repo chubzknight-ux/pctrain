@@ -26,15 +26,15 @@
 *{box-sizing:border-box;min-width:0}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip;-webkit-tap-highlight-color:transparent}
-.wrap{max-width:980px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 0 8px}
+.wrap{max-width:980px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) calc(110px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top)) 0 12px}
 h1{font:400 clamp(24px,5vw,34px)/1.05 'Bowlby One',sans-serif;margin:0;letter-spacing:-.01em}
 h1 span{color:var(--mint)}
-nav{display:flex;gap:6px;overflow-x:auto;padding:6px 0 14px;position:sticky;top:0;background:var(--bg);z-index:5}
-nav button{flex:none}
 button{font:inherit;color:inherit;cursor:pointer}
-.tab{background:transparent;border:1px solid var(--line);border-radius:999px;padding:9px 16px;min-height:44px;font-weight:600;color:var(--mute)}
-.tab[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;justify-content:center;gap:4px;background:var(--bg2);border-top:1px solid var(--line);padding:6px max(8px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+.tab{flex:1;max-width:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:transparent;border:0;border-radius:14px;padding:6px 2px;min-height:56px;font-size:12px;font-weight:600;color:var(--mute)}
+.tab svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-selected=true]{background:var(--panel);color:var(--mint)}
 .tab:focus-visible,.btn:focus-visible,.seg button:focus-visible,.ic:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
 .hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:20px;align-items:center;background:var(--panel);border-radius:22px;padding:clamp(18px,3vw,30px)}
 .hero h2{font:400 clamp(32px,6vw,48px)/1.05 'Bowlby One',sans-serif;margin:4px 0 8px}
@@ -139,7 +139,24 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
 #done p{color:var(--mute)}
 @media(max-width:640px){.hero{grid-template-columns:minmax(0,1fr)}.heroart{max-width:190px;grid-row:2}.hero .btn.go{width:100%}}
 @media(max-height:680px){#cue{min-height:0;font-size:15px}.ctr{padding-top:8px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto;animation:none!important;transition:none!important}}
+/* ===== Penyempurnaan alur ===== */
+#fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:9;box-shadow:0 8px 24px rgba(0,0,0,.45);padding:12px 26px;min-height:48px;font-size:16px;white-space:nowrap}
+#fab[hidden]{display:none}
+.pmeta{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--mute);font-variant-numeric:tabular-nums;margin:-4px 0 4px}
+.stage{position:relative;cursor:pointer}
+#player.paused #art{opacity:.4}
+#player.paused .stage::after{content:'⏸ JEDA';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:400 22px 'Bowlby One',sans-serif;background:rgba(10,34,37,.92);border:1px solid var(--line);padding:8px 20px;border-radius:999px}
+#quit{position:absolute;inset:0;z-index:3;background:rgba(6,20,22,.9);display:grid;place-items:center;padding:20px}
+#quit[hidden]{display:none}
+.qbox{background:var(--panel);border-radius:20px;padding:22px;max-width:360px;width:100%;text-align:center;display:grid;gap:10px}
+.qbox h3{font:400 24px/1.1 'Bowlby One',sans-serif;margin:0}
+.qbox p{margin:0 0 6px;color:var(--mute)}
+#player.fin .pmeta{display:none}
+#done .chips{justify-content:center}
+#done .btn{width:100%;margin-top:8px}
+@media(min-width:900px){nav{max-width:560px;left:50%;right:auto;transform:translateX(-50%);border-radius:20px 20px 0 0;border:1px solid var(--line);border-bottom:0}}
+
 </style>
 </head>
 <body>
@@ -147,20 +164,14 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
   <header>
     <h1>Latihan Inti <span>Pria</span></h1>
   </header>
-  <nav role="tablist">
-    <button class="tab" role="tab" data-v="today" aria-selected="true">Hari ini</button>
-    <button class="tab" role="tab" data-v="week" aria-selected="false">Minggu ini</button>
-    <button class="tab" role="tab" data-v="move" aria-selected="false">Gerakan</button>
-    <button class="tab" role="tab" data-v="hist" aria-selected="false">Riwayat</button>
-    <button class="tab" role="tab" data-v="guide" aria-selected="false">Panduan</button>
-  </nav>
+
 
   <main>
-    <div id="v-today"></div>
-    <div id="v-week" hidden></div>
-    <div id="v-move" hidden></div>
-    <div id="v-hist" hidden></div>
-    <div id="v-guide" hidden>
+    <div role="tabpanel" aria-labelledby="t-today" id="v-today"></div>
+    <div role="tabpanel" aria-labelledby="t-week" id="v-week" hidden></div>
+    <div role="tabpanel" aria-labelledby="t-move" id="v-move" hidden></div>
+    <div role="tabpanel" aria-labelledby="t-hist" id="v-hist" hidden></div>
+    <div role="tabpanel" aria-labelledby="t-guide" id="v-guide" hidden>
       <div class="guide">
         <section><h3>Temukan ototnya</h3><ul>
           <li>Bayangkan menahan kencing <b>dan</b> menahan buang angin sekaligus. Otot yang terangkat ke dalam itulah dasar panggul (pelvic floor).</li>
@@ -200,14 +211,24 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
   </main>
 </div>
 
-<div id="player" aria-live="polite">
+  <nav role="tablist" aria-label="Menu utama">
+    <button class="tab" role="tab" id="t-today" aria-controls="v-today" data-v="today" aria-selected="true" tabindex="0"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span>Hari ini</span></button>
+    <button class="tab" role="tab" id="t-week" aria-controls="v-week" data-v="week" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Minggu</span></button>
+    <button class="tab" role="tab" id="t-move" aria-controls="v-move" data-v="move" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v6M6 10l6 2 6-2M9 21l3-7 3 7"/></svg><span>Gerakan</span></button>
+    <button class="tab" role="tab" id="t-hist" aria-controls="v-hist" data-v="hist" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 20v-7M11 20V6M16 20v-10"/></svg><span>Riwayat</span></button>
+    <button class="tab" role="tab" id="t-guide" aria-controls="v-guide" data-v="guide" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6c-2-1.5-5-2-8-2v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2zM12 6v14"/></svg><span>Panduan</span></button>
+  </nav>
+<button class="btn go" id="fab" hidden>▶ Mulai sesi</button>
+
+<div id="player" role="dialog" aria-modal="true" aria-label="Sesi latihan">
   <div class="ptop">
-    <button class="ic" id="pClose" aria-label="Tutup"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <button class="ic" id="pClose" aria-label="Keluar dari sesi"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="grow"><div class="blk" id="pBlk"></div></div>
     <button class="ic" id="pSnd" aria-label="Bunyi"><svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg></button>
     <button class="ic" id="pVoice" aria-label="Suara pemandu"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg></button>
   </div>
   <div class="pbar"><i id="pProg"></i></div>
+  <div class="pmeta"><span id="pStep"></span><span id="pLeft"></span></div>
   <div id="pMain" style="display:flex;flex-direction:column;flex:1">
     <div id="exName"></div>
     <div id="repInfo"></div>
@@ -239,10 +260,16 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
       <button class="ic" id="pNext" aria-label="Gerakan berikutnya"><svg viewBox="0 0 24 24"><path d="M18 5v14M5 5l9 7-9 7z"/></svg></button>
     </div>
   </div>
+  <div id="quit" role="alertdialog" aria-modal="true" aria-labelledby="qT" hidden>
+    <div class="qbox"><h3 id="qT">Keluar dari sesi?</h3><p>Progres sesi ini tidak disimpan.</p>
+      <button class="btn" id="qStay">Lanjut latihan</button><button class="btn ghost" id="qLeave">Keluar</button></div>
+  </div>
   <div id="done">
     <h2>Sesi selesai</h2>
     <p id="doneTxt"></p>
+    <div class="chips" id="doneChips"></div>
     <button class="btn" id="doneBtn">Tutup</button>
+    <button class="btn ghost" id="doneHist">Lihat riwayat</button>
   </div>
 </div>
 
@@ -433,7 +460,7 @@ function steps(pl,from){
 const mins=pl=>Math.max(1,Math.round(steps(pl,0).reduce((a,s)=>a+s.d,0)/60));
 
 /* ---------- views ---------- */
-let view=new Date();
+let view=new Date(),curV='today';
 const today=()=>new Date();
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function heroArt(){const c=$('#art').cloneNode(true);const gf=c.querySelector('#gFig');gf&&gf.remove();c.querySelector('#gPelvis').style.display='';c.removeAttribute('id');c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));c.querySelectorAll('.sling').forEach(e=>e.setAttribute('d','M94 222 Q160 212 222 228'));c.querySelectorAll('circle')[2].setAttribute('stroke-dashoffset','240');return c.outerHTML}
@@ -451,6 +478,17 @@ function renderToday(){
     h+=`<div class="block"><div class="bh"><i class="dot" style="background:${BL[b].c}"></i><h3>${BL[b].n}</h3><span>${its.length} gerakan</span></div><div class="cards">`+
     its.map((it,ix)=>`<article class="card" style="--c:${BL[b].c}">${figSVG(it.id,ix*.7)}<div class="ct"><h4>${esc(it.ex.n)}</h4><div class="rx">${build(it.ex,pl.P).txt}</div><p>${esc(it.ex.d)}</p></div><div class="cx"><details><summary>Cara melakukan</summary><ol>${it.ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></details><button class="btn ghost small" data-start="${it.i}">Mulai dari sini</button></div></article>`).join('')+`</div></div>`;});
   $('#v-today').innerHTML=h;
+  watchHero(done);
+}
+// Tombol "Mulai sesi" mengambang muncul saat tombol utama di atas sudah tergulir keluar layar
+let heroIO=null;
+function watchHero(done){
+  const fab=$('#fab'),btn=document.querySelector('#v-today .hero .go');
+  fab.textContent=done?'▶ Ulangi sesi':'▶ Mulai sesi';fab.hidden=true;
+  if(heroIO)heroIO.disconnect();
+  if(!btn||!('IntersectionObserver' in window))return;
+  heroIO=new IntersectionObserver(es=>{fab.hidden=!(curV=='today'&&!run&&!es[0].isIntersecting)});
+  heroIO.observe(btn);
 }
 function renderWeek(){
   const t0=today(),mon=new Date(t0);mon.setDate(t0.getDate()-((t0.getDay()+6)%7));
@@ -473,7 +511,7 @@ function renderMove(){
       return `<article class="card" style="--c:${BL[b].c}">${figSVG(id,(n++)*.5)}<div class="ct"><h4>${esc(ex.n)}</h4><div class="rx">${build(ex,P1).txt}</div><p>${esc(ex.d)}</p></div><div class="cx"><ol class="stp">${ex.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>${ex.min>1?`<span class="chip">Level ${LVN[ex.min]}+</span>`:''}<button class="btn ghost small" data-one="${id}">Latihan gerakan ini</button></div></article>`}).join('')+'</div></div>'});
   $('#v-move').innerHTML=h}
 function startOne(id){const ex=EX[id];startSession(0,{t:{n:ex.n},P:P0(S.level,stage(),false),items:[{id,ex}]})}
-function show(v){document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.v==v));['today','week','move','hist','guide'].forEach(x=>$('#v-'+x).hidden=x!=v);if(v=='today')renderToday();if(v=='move')renderMove();if(v=='week')renderWeek();if(v=='hist')renderHist();window.scrollTo(0,0)}
+function show(v){curV=v;$('#fab').hidden=true;document.querySelectorAll('.tab').forEach(b=>{b.setAttribute('aria-selected',b.dataset.v==v);b.tabIndex=b.dataset.v==v?0:-1});['today','week','move','hist','guide'].forEach(x=>$('#v-'+x).hidden=x!=v);if(v=='today')renderToday();if(v=='move')renderMove();if(v=='week')renderWeek();if(v=='hist')renderHist();window.scrollTo(0,0)}
 document.addEventListener('click',e=>{
   const t=e.target.closest('button');if(!t)return;
   if(t.classList.contains('tab'))return show(t.dataset.v);
@@ -483,8 +521,13 @@ document.addEventListener('click',e=>{
   if(t.dataset.day){const[y,m,d]=t.dataset.day.split('-').map(Number);view=new Date(y,m-1,d);return show('today')}
   if(t.id=='backT'){view=today();return renderToday()}
   if(t.id=='lvUp'){S.level++;S.lvCount=0;save();return renderToday()}
+  if(t.id=='fab')return startSession(0);
   if(t.id=='reset'){if(t.dataset.sure){S.hist={};S.lvCount=0;save();renderHist()}else{t.dataset.sure=1;t.textContent='Ketuk lagi untuk menghapus'}}
 });
+$('nav').addEventListener('keydown',e=>{
+  const tabs=[...document.querySelectorAll('.tab')],i=tabs.indexOf(document.activeElement);if(i<0)return;
+  const n=e.key=='ArrowRight'?(i+1)%tabs.length:e.key=='ArrowLeft'?(i+tabs.length-1)%tabs.length:e.key=='Home'?0:e.key=='End'?tabs.length-1:-1;
+  if(n<0)return;e.preventDefault();tabs[n].focus();show(tabs[n].dataset.v)});
 document.addEventListener('change',e=>{if(e.target.id=='sSnd'){S.sound=e.target.checked;save()}if(e.target.id=='sVo'){S.voice=e.target.checked;save()}});
 
 /* ---------- player ---------- */
@@ -499,11 +542,13 @@ function startSession(from,ov){
   try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();actx.resume()}catch(e){}
   const pl=ov||plan(view);run={pl,st:steps(pl,from||0),i:0,t:0,play:true,key:key(view),tot:0,tick:-1,one:!!ov};
   run.tot=run.st.reduce((a,s)=>a+s.d,0);
+  $('#fab').hidden=true;$('#quit').hidden=true;$('#player').classList.remove('fin');
+  try{history.pushState({p:1},'')}catch(e){}
   $('#player').classList.add('open');$('#pMain').style.display='flex';$('#done').style.display='none';document.body.style.overflow='hidden';
   try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(w=>wl=w).catch(()=>{})}catch(e){}
   setTog();enter();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
 }
-function closeP(){const back=run&&run.one?'move':'today';run=null;cancelAnimationFrame(raf);$('#player').classList.remove('open');document.body.style.overflow='';try{speechSynthesis.cancel();wl&&wl.release()}catch(e){}show(back)}
+function closeP(){const back=run&&run.one?'move':'today';run=null;$('#quit').hidden=true;$('#player').classList.remove('paused');if(history.state&&history.state.p){try{history.back()}catch(e){}}cancelAnimationFrame(raf);$('#player').classList.remove('open');document.body.style.overflow='';try{speechSynthesis.cancel();wl&&wl.release()}catch(e){}show(back)}
 const cur=()=>run.st[run.i];
 function enter(){
   const s=cur(),ex=run.pl.items[s.ei].ex;run.tick=-1;
@@ -524,9 +569,11 @@ function step(dir){if(!run)return;const ei=cur().ei;let target;
   if(dir>0){target=run.st.findIndex((s,i)=>i>run.i&&s.ei>ei)}else{const first=run.st.findIndex(s=>s.ei==ei);target=(run.i-first<3&&ei>0)?run.st.findIndex(s=>s.ei==ei-1):first;if(target<0)target=first}
   if(target<0)return finish();run.i=target;run.t=0;enter();}
 function finish(){
-  cancelAnimationFrame(raf);const m=Math.max(1,Math.round(run.tot/60)),k=run.key;
+  cancelAnimationFrame(raf);run.fin=true;$('#player').classList.add('fin');const m=Math.max(1,Math.round(run.tot/60)),k=run.key;
   if(!run.one){if(!S.hist[k]){S.lvCount=(S.lvCount||0)+1}S.hist[k]={m};save()}beep(880,200);setTimeout(()=>beep(1175,300),220);say('Sesi selesai. Kerja bagus.');
   $('#pMain').style.display='none';$('#done').style.display='block';
+  $('#doneChips').innerHTML=`<span class="chip">${m} menit</span><span class="chip">${run.pl.items.length} gerakan</span>`+(run.one?'':`<span class="chip">${streak()} hari beruntun</span>`);
+  $('#doneHist').hidden=run.one;
   $('#doneTxt').textContent=run.one?`${run.pl.t.n} selesai. Ini latihan satu gerakan, tidak dihitung sebagai sesi harian.`:`${run.pl.t.n} · sekitar ${m} menit. Rangkaian hari beruntun: ${streak()} hari. Besok programnya berganti.`;
 }
 const ease=x=>x<.5?2*x*x:1-((-2*x+2)**2)/2;
@@ -542,13 +589,28 @@ function draw(){
   if(s.d>=4&&ri<=3&&ri>0&&ri!=run.tick){run.tick=ri;beep(1200,40,.08)}
   $('#ring').setAttribute('stroke-dashoffset',(829.4*(1-run.t/s.d)).toFixed(1));
   const done=run.st.slice(0,run.i).reduce((a,x)=>a+x.d,0)+run.t;$('#pProg').style.width=(done/run.tot*100).toFixed(1)+'%';
+  const lf=Math.max(0,Math.ceil(run.tot-done));$('#pLeft').textContent='sisa '+Math.floor(lf/60)+':'+String(lf%60).padStart(2,'0');$('#pStep').textContent='Gerakan '+(s.ei+1)+' dari '+run.pl.items.length;
   if(ex.b==='pf'&&!s.prep){const y=(268-lv*19.3).toFixed(1),d=`M94 ${222-Math.max(0,lv)*2} Q160 ${y} 222 ${228-Math.max(0,lv)*2}`;$('#sling').setAttribute('d',d);$('#sling2').setAttribute('d',d);$('#blad').setAttribute('transform',`translate(0 ${(-lv*5).toFixed(1)})`);$('#knob').style.bottom=Math.max(0,Math.min(100,(lv+1)/4*100))+'%'}
   else{const q=s.prep?loopQ(run.t):Math.max(0,Math.min(1,lv/3));setFig($('#gFig'),ex,q,ex.k==='stretch'&&!s.prep?.12*Math.sin(run.t*1.6):0)}
 }
-function setTog(){$('#pSnd').classList.toggle('off',!S.sound);$('#pVoice').classList.toggle('off',!S.voice);$('#playIco').innerHTML=run&&run.play?icoPause:icoPlay}
+function setTog(){$('#player').classList.toggle('paused',!!run&&!run.play&&$('#quit').hidden);$('#pSnd').classList.toggle('off',!S.sound);$('#pVoice').classList.toggle('off',!S.voice);$('#playIco').innerHTML=run&&run.play?icoPause:icoPlay}
 $('#pPlay').onclick=()=>{if(!run)return;run.play=!run.play;try{actx&&actx.resume()}catch(e){}if(!run.play)try{speechSynthesis.cancel()}catch(e){}setTog()};
 $('#pNext').onclick=()=>step(1);$('#pPrev').onclick=()=>step(-1);
-$('#pClose').onclick=closeP;$('#doneBtn').onclick=closeP;
+let wasPlaying=false;
+function askQuit(){if(!run||!$('#quit').hidden)return;wasPlaying=run.play;run.play=false;try{speechSynthesis.cancel()}catch(e){}$('#quit').hidden=false;setTog();$('#qStay').focus()}
+function stay(){$('#quit').hidden=true;if(run){run.play=wasPlaying;last=performance.now();try{actx&&actx.resume()}catch(e){}}setTog()}
+$('#pClose').onclick=()=>run&&!run.fin?askQuit():closeP();
+$('#qStay').onclick=stay;$('#qLeave').onclick=closeP;
+$('#doneBtn').onclick=closeP;$('#doneHist').onclick=()=>{closeP();show('hist')};
+$('.stage').onclick=()=>{if(run&&$('#quit').hidden)$('#pPlay').click()};
+// Tombol Kembali di HP / Esc / spasi / panah
+addEventListener('popstate',()=>{if(run&&!run.fin){try{history.pushState({p:1},'')}catch(e){}askQuit()}else if(run)closeP()});
+addEventListener('keydown',e=>{
+  if(!run)return;
+  if(e.key=='Escape'){e.preventDefault();$('#quit').hidden?(run.fin?closeP():askQuit()):stay();return}
+  if(!$('#quit').hidden||run.fin)return;
+  if(e.key==' '&&!/^(BUTTON|INPUT)$/.test(document.activeElement.tagName)){e.preventDefault();$('#pPlay').click()}
+  else if(e.key=='ArrowRight')step(1);else if(e.key=='ArrowLeft')step(-1)});
 $('#pSnd').onclick=()=>{S.sound=!S.sound;save();setTog()};
 $('#pVoice').onclick=()=>{S.voice=!S.voice;save();if(!S.voice)try{speechSynthesis.cancel()}catch(e){}setTog()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&run&&run.play){run.play=false;setTog()}});
