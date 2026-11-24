@@ -1,6 +1,6 @@
 // Latihan Inti Pria: bisa dipasang di layar utama dan tetap jalan tanpa internet.
 // Halaman: ambil versi terbaru dulu, pakai cache kalau offline. Ikon & font: cache dulu.
-const CACHE = 'latihan-inti-v3';
+const CACHE = 'latihan-inti-v4';
 const SHELL = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png', '/favicon.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(SHELL.map(u => c.add(u).catch(() => {})))).then(() => self.skipWaiting()));
