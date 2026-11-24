@@ -141,6 +141,20 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
 @media(max-height:680px){#cue{min-height:0;font-size:15px}.ctr{padding-top:8px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto;animation:none!important;transition:none!important}}
 /* ===== Penyempurnaan alur ===== */
+.sheetwrap{position:fixed;inset:0;z-index:30;background:rgba(6,20,22,.82);display:grid;place-items:center;padding:16px}
+.sheetwrap[hidden]{display:none}
+.sheetbox{background:var(--panel);border-radius:20px;width:100%;max-width:480px;max-height:calc(100dvh - 32px);display:flex;flex-direction:column;overflow:hidden}
+.sheethd{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px 20px}
+.sheethd h3{font:400 22px/1.1 'Bowlby One',sans-serif;margin:0}
+.sheetbd{padding:4px 20px 12px;overflow:auto;flex:1;min-height:0}
+.sheetbd ul{margin:8px 0;padding-left:20px}.sheetbd li{margin:7px 0}
+.sheetft{display:flex;gap:8px;padding:12px 20px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.sheetft .btn:last-child{flex:1}
+.lgrow{display:flex;gap:12px;align-items:center;margin:9px 0}
+.lgrow .k{flex:none;width:30px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#06211f}
+.lgrow .k.o{background:transparent;border:2px solid var(--yel);color:var(--ink)}
+.sheetbd h4{margin:14px 0 2px;font-size:13px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+
 #fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:9;box-shadow:0 8px 24px rgba(0,0,0,.45);padding:12px 26px;min-height:48px;font-size:16px;white-space:nowrap}
 #fab[hidden]{display:none}
 .pmeta{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--mute);font-variant-numeric:tabular-nums;margin:-4px 0 4px}
@@ -163,6 +177,7 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
 <div class="wrap">
   <header>
     <h1>Latihan Inti <span>Pria</span></h1>
+    <button class="ic" id="btnInfo" aria-label="Legenda dan yang baru"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg></button>
   </header>
 
 
@@ -219,6 +234,14 @@ details ol{margin:6px 0 0;padding-left:20px;color:var(--mute);font-size:15px}
     <button class="tab" role="tab" id="t-guide" aria-controls="v-guide" data-v="guide" aria-selected="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6c-2-1.5-5-2-8-2v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2zM12 6v14"/></svg><span>Panduan</span></button>
   </nav>
 <button class="btn go" id="fab" hidden>▶ Mulai sesi</button>
+
+<div id="sheet" class="sheetwrap" role="dialog" aria-modal="true" aria-labelledby="shT" hidden>
+  <div class="sheetbox">
+    <div class="sheethd"><h3 id="shT"></h3><button class="ic" id="shX" aria-label="Tutup"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheetbd" id="shBody"></div>
+    <div class="sheetft"><button class="btn ghost" id="shAlt"></button><button class="btn" id="shOk">Oke</button></div>
+  </div>
+</div>
 
 <div id="player" role="dialog" aria-modal="true" aria-label="Sesi latihan">
   <div class="ptop">
@@ -596,6 +619,25 @@ function draw(){
 function setTog(){$('#player').classList.toggle('paused',!!run&&!run.play&&$('#quit').hidden);$('#pSnd').classList.toggle('off',!S.sound);$('#pVoice').classList.toggle('off',!S.voice);$('#playIco').innerHTML=run&&run.play?icoPause:icoPlay}
 $('#pPlay').onclick=()=>{if(!run)return;run.play=!run.play;try{actx&&actx.resume()}catch(e){}if(!run.play)try{speechSynthesis.cancel()}catch(e){}setTog()};
 $('#pNext').onclick=()=>step(1);$('#pPrev').onclick=()=>step(-1);
+/* ---------- Legenda & Apa yang baru ---------- */
+// Setiap update: naikkan APP_VERSION, tambah entri paling atas di CHANGELOG, perbarui LEGEND bila ada warna/ikon baru, dan naikkan CACHE di sw.js.
+const APP_VERSION='2026.11.24';
+const CHANGELOG=[{v:APP_VERSION,d:'24 Nov 2026',items:['Menu pindah ke bawah dengan ikon, lebih mudah dijangkau jempol','Tombol Mulai sesi mengambang saat menggulir daftar gerakan','Ketuk layar latihan untuk jeda; keluar sesi sekarang minta konfirmasi','Layar selesai menampilkan ringkasan dan tombol Lihat riwayat','Legenda dan popup Apa yang baru ini']}];
+const LEGEND=[['Blok latihan',[['var(--mint)','','Dasar panggul (kegel)'],['var(--yel)','','Adduktor (paha dalam)'],['var(--coral)','','Hip flexor'],['var(--cd)','','Pendinginan / peregangan']]],
+['Layar latihan',[['var(--mint)','▶','Cincin & bilah atas = kemajuan fase dan seluruh sesi'],['var(--yel)','','SIAP-SIAP = bersiap sebelum gerakan dimulai'],['var(--mute)','','ISTIRAHAT / GANTI SISI = jeda antar set atau sisi'],['var(--ink)','⏸','Ketuk layar = jeda / lanjut']]],
+['Riwayat',[['var(--mint)','','Hari selesai latihan'],['o','','Outline kuning = hari ini']]],
+['Tahap',[['var(--mint)','','Naik otomatis tiap 6 sesi selesai (maks. tahap 3), lalu bisa naik level']]]];
+let sheetFrom=null;
+function openSheet(title,html,alt){sheetFrom=document.activeElement;$('#shT').textContent=title;$('#shBody').innerHTML=html;const a=$('#shAlt');a.textContent=alt?alt[0]:'';a.hidden=!alt;a.onclick=alt?alt[1]:null;$('#sheet').hidden=false;$('#shOk').focus()}
+function closeSheet(){$('#sheet').hidden=true;try{sheetFrom&&sheetFrom.focus()}catch(e){}}
+function showNew(){const c=CHANGELOG[0];openSheet('Apa yang baru',`<p class="fine" style="margin:0">Versi ${c.v} · ${c.d}</p><ul>${c.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`,['Lihat legenda',showLegend])}
+function showLegend(){openSheet('Legenda',LEGEND.map(([h,r])=>`<h4>${h}</h4>`+r.map(([c,t,x])=>`<div class="lgrow"><i class="k ${c=='o'?'o':''}" style="${c=='o'?'':'background:'+c}">${t}</i><span>${esc(x)}</span></div>`).join('')).join(''),['Apa yang baru',showNew])}
+$('#btnInfo').onclick=showLegend;$('#shOk').onclick=closeSheet;$('#shX').onclick=closeSheet;
+$('#sheet').addEventListener('click',e=>{if(e.target.id=='sheet')closeSheet()});
+addEventListener('keydown',e=>{if(e.key=='Escape'&&!$('#sheet').hidden){e.stopPropagation();closeSheet()}},true);
+{let seen=null;try{seen=localStorage.getItem('lip_ver')}catch(e){}
+ if(seen&&seen!==APP_VERSION)setTimeout(showNew,500);try{localStorage.setItem('lip_ver',APP_VERSION)}catch(e){}}
+
 let wasPlaying=false;
 function askQuit(){if(!run||!$('#quit').hidden)return;wasPlaying=run.play;run.play=false;try{speechSynthesis.cancel()}catch(e){}$('#quit').hidden=false;setTog();$('#qStay').focus()}
 function stay(){$('#quit').hidden=true;if(run){run.play=wasPlaying;last=performance.now();try{actx&&actx.resume()}catch(e){}}setTog()}
